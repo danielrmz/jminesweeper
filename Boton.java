@@ -34,6 +34,10 @@ public class Boton extends JButton {
 		return this.value;
 	}
 	
+	public void setValue(int value){
+		this.value = value;
+	}
+	
 	public void setStatus(int status){
 		this.status = (status != Boton.CLICKED && status != Boton.UNCLICKED && status!= Boton.FLAGED)?Boton.UNCLICKED:status;
 		
