@@ -1,23 +1,19 @@
 
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-
-import javax.swing.JApplet;
-import javax.swing.event.MouseInputListener;
-import javax.swing.plaf.ButtonUI;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.event.*;
 
 
 /**
  * Clase que crea la cuadricula
  * @author Revolutionary Software Developers
  */
-public class Grid extends Panel {
+public class Grid extends JPanel implements MouseInputListener {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private MouseListener mouse = null;
 	protected int rows;
 	protected int cols;
 	
@@ -26,10 +22,9 @@ public class Grid extends Panel {
 	/**
 	 *  Constructor vacio
 	 */
-	public Grid(int rows,int cols,MouseListener mouse) {
+	public Grid(int rows,int cols) {
 		this.rows = rows;
 		this.cols = cols;
-		this.mouse = mouse;
 		this.setLayout(new GridLayout(rows,cols));
 		this.makeGrid();
 	}
@@ -40,15 +35,16 @@ public class Grid extends Panel {
 	 */
 	private void makeGrid(){
 		int [][] data = this.randomBombs();
-		
 		this.grid = new Boton[this.rows][this.cols];
+		
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
 		Image image = toolkit.getImage(Main.ruta+"img/rifle.gif");
 		Cursor cursor = toolkit.createCustomCursor(image, new Point(0,0), "rifle");
+		
 		for(int i=0;i<data.length;i++){
 			for(int j=0;j<data[i].length;j++){
 				this.grid[i][j] = new Boton(Boton.UNCLICKED,data[i][j]);
-				this.grid[i][j].addMouseListener(this.mouse);
+				this.grid[i][j].addMouseListener(this);
 				this.grid[i][j].setCursor(cursor);
 	            this.add(this.grid[i][j]);
 			}
@@ -76,6 +72,14 @@ public class Grid extends Panel {
 	}
 	
 	/**
+	 * Resetea el GRID
+	 */
+	
+	public void reset(){
+		this.makeGrid();
+	}
+	
+	/**
 	 * Descubre las bombas 
 	 */
 	public void uncoverBombs(){
@@ -87,6 +91,52 @@ public class Grid extends Panel {
 				}
 			}
 		}
+	}
+
+	public void mouseClicked(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mousePressed(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		Boton aux = (Boton)arg0.getSource();
+		if(arg0.getButton() == MouseEvent.BUTTON1){
+			aux.setStatus(Boton.CLICKED);
+			if(aux.value == Boton.BOMB){
+				aux.value = Boton.DEAD;
+				aux.setStatus(Boton.CLICKED);
+				this.uncoverBombs();
+			}
+		} else if (arg0.getButton() == MouseEvent.BUTTON3){ 
+			int action = (aux.status == Boton.UNCLICKED)?Boton.FLAGED:Boton.UNCLICKED;
+			aux.setStatus(action);
+		}
+	}
+
+	public void mouseReleased(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mouseEntered(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mouseExited(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mouseDragged(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mouseMoved(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
