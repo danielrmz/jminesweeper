@@ -85,7 +85,7 @@ public class Grid extends JPanel implements MouseInputListener {
 	public void uncoverBombs(){
 		for(int i=0;i<grid.length;i++){
 			for(int j=0;j<grid[i].length;j++){
-				int value = grid[i][j].value;
+				int value = grid[i][j].getValue();
 				if(value == Boton.BOMB){
 					grid[i][j].setStatus(Boton.CLICKED);
 				}
@@ -103,13 +103,13 @@ public class Grid extends JPanel implements MouseInputListener {
 		Boton aux = (Boton)arg0.getSource();
 		if(arg0.getButton() == MouseEvent.BUTTON1){
 			aux.setStatus(Boton.CLICKED);
-			if(aux.value == Boton.BOMB){
-				aux.value = Boton.DEAD;
+			if(aux.getValue() == Boton.BOMB){
+				aux.setValue(Boton.DEAD);
 				aux.setStatus(Boton.CLICKED);
 				this.uncoverBombs();
 			}
 		} else if (arg0.getButton() == MouseEvent.BUTTON3){ 
-			int action = (aux.status == Boton.UNCLICKED)?Boton.FLAGED:Boton.UNCLICKED;
+			int action = (aux.getStatus() == Boton.UNCLICKED)?Boton.FLAGED:Boton.UNCLICKED;
 			aux.setStatus(action);
 		}
 	}
