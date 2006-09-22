@@ -12,58 +12,65 @@ public class Boton extends JButton {
 	public static final int UNCLICKED = 0;
 	public static final int CLICKED = 1;
 	
-	public int status = 0; //-- Clicked o Unclicked [exceptuando el flag]
-	public int value = 0;  //-- Valor del cuadro -2 bomba -1 flag x>=0 numero 
+	private int status = 0; //-- Clicked o Unclicked [exceptuando el flag]
+	private int value = 0;  //-- Valor del cuadro -2 bomba -1 flag x>=0 numero 
 	
 	public Boton(){
-		super();
+
 	}
 	
 	public Boton(int status, int value){
-		//super(""+((value<1)?"":value+""));//-- De prueba al pasarle la cantidad
 		super(""+value);
 		this.status = (status != Boton.CLICKED && status != Boton.UNCLICKED && status!= Boton.FLAGED)?Boton.UNCLICKED:status;
 		this.value = value;
+		this.setIcon(Main.getIconImage("boton.jpg"));
+	}
+	
+	public int getStatus(){
+		return this.status;
+	}
+	
+	public int getValue(){
+		return this.value;
 	}
 	
 	public void setStatus(int status){
 		this.status = (status != Boton.CLICKED && status != Boton.UNCLICKED && status!= Boton.FLAGED)?Boton.UNCLICKED:status;
+		
 		if(status==Boton.CLICKED && this.value<1){
-			ImageIcon img = Boton.getTypeImage(this.value);
-			this.setIcon(img);
+			
+			this.setTypeImage();	
+			
 		} else if(status == Boton.FLAGED){
-			ImageIcon img = Boton.getImage(Main.ruta+"img/flag.jpg");
+			
+			ImageIcon img = Main.getIconImage("flag.jpg");
 			this.setIcon(img);
+			
+		} else if(status==Boton.UNCLICKED) {
+			
+			this.setIcon(Main.getIconImage("boton.jpg"));
+			
 		} else if(this.value>0) {
+			
 			this.setText(this.value+"");
-		} else if(status==Boton.UNCLICKED) { 
-			this.setIcon(Boton.getImage(Main.ruta+"img/boton.jpg"));
-		}
+			
+		} 
 	}
 
-	public static ImageIcon getImage(String filename){
-		//Toolkit toolkit = Toolkit.getDefaultToolkit();
-		//Image image = toolkit.getImage(filename);
-		ImageIcon image = new ImageIcon(filename);
-		return image;
-	}
-	
-	public static ImageIcon getTypeImage(int value){
+	public void setTypeImage(){
 		ImageIcon image = null;
-		switch(value){
+		switch(this.value){
 		case Boton.BOMB: 
-			image = Boton.getImage(Main.ruta+"img/bomb.jpg");
-			break;
-		case Boton.NUMBER:
+			image = Main.getIconImage("bomb.jpg");
 			break;
 		case Boton.DEAD: 
-			image = Boton.getImage(Main.ruta+"img/dead.jpg");
+			image = Main.getIconImage("dead.jpg");
 			break;
 		default: 
-			image = Boton.getImage(Main.ruta+"img/boton.jpg");
+			image = Main.getIconImage("boton.jpg");
 			break;
 		}
-		return image;
+		this.setIcon(image);
 	}
 
 }

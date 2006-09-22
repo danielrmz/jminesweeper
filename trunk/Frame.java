@@ -1,85 +1,147 @@
-
-
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-
+import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.event.MouseInputListener;
+import com.sun.java.swing.plaf.windows.*;
 
-public class Frame extends JFrame implements MouseInputListener {
 
+public class Frame extends JFrame implements ActionListener {
+	/**
+	 * Variable identificadora del Eclipse
+	 */
 	private static final long serialVersionUID = 1L;
+	
+	/**
+	 * Grid de Botones / Datos
+	 */
 	private Grid grid;
 	
 	/**
-	 * Constructor, Inicializa el frame
-	 *
+	 * Menu Bar
+	 */
+	JMenuBar menubar = new JMenuBar();
+	
+	
+	/**
+	 * Menu Item Nuevo
+	 */
+	private JMenuItem nuevo = new JMenuItem("Nuevo");
+	
+	/**
+	 * Menu Item Principiantes
+	 */
+	private JMenuItem principiantes = new JMenuItem("Principiantes");
+	
+	/**
+	 * Menu Item Intermedios
+	 */
+	private JMenuItem intermedios = new JMenuItem("Intermedios");
+	
+	/**
+	 * Menu Item Experto
+	 */
+	private JMenuItem expertos = new JMenuItem("Expertos");
+	
+	/**
+	 * Menu Item Preferencias
+	 */
+	private JMenuItem preferencias = new JMenuItem("Preferencias...");
+	
+	/**
+	 * Menu Item Sonido
+	 */
+	private JCheckBoxMenuItem sonido = new JCheckBoxMenuItem("Sonido");
+	
+	/**
+	 * Menu Item Salir
+	 */
+	private JMenuItem salir = new JMenuItem("Salir");
+	
+	/**
+	 * Menu Item de Ayuda
+	 */
+	private JMenuItem contenido = new JMenuItem("Contenido");
+	
+	/**
+	 * Menu Item Sobre
+	 */
+	private JMenuItem sobre = new JMenuItem("Sobre...");
+	
+	/**
+	 * Constructor, Inicializa el frame de la aplicación
 	 */
 	public Frame() {
-		setBackground(Color.white);
-		setSize(470,400);
-		setTitle("Buscaminas");
-		setLayout(new BorderLayout());
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		//-- Preferencias de la pantalla
+		this.setBackground(Color.white);
+		this.setSize(470,400);
+		this.setTitle("Buscaminas");
+		this.setLayout(new BorderLayout());
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		this.setResizable(false);
 		
-		JPanel top = new JPanel(new BorderLayout());
-		JPanel game = new JPanel(new BorderLayout());
+		//-- Menus
+		JMenu archivo = new JMenu("Archivo");
+		JMenu ayuda = new JMenu("Ayuda");
 		
-		this.grid = new Grid(10,10,this);
-		game.add(this.grid,BorderLayout.CENTER);
+		archivo.setMnemonic('A');
+		ayuda.setMnemonic('y');
 		
+		//-- Items del Menu
+		archivo.add(nuevo);
+		nuevo.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N,
+                java.awt.Event.CTRL_MASK));
+		archivo.addSeparator();
+		archivo.add(principiantes);
+		archivo.add(intermedios);
+		archivo.add(expertos);
+		archivo.add(preferencias);
+		archivo.addSeparator();
+		archivo.add(sonido);
+		archivo.addSeparator();
+		archivo.add(salir);
 		
-		top.add(new Button("Empezar"),BorderLayout.CENTER);
-		this.add(top,BorderLayout.NORTH);
-		this.add(game,BorderLayout.CENTER);
+		ayuda.add(contenido);
+		ayuda.addSeparator();
+		ayuda.add(sobre);
+		
+		//-- Listeners del menu
+		nuevo.addActionListener(this);
+		principiantes.addActionListener(this);
+		intermedios.addActionListener(this);
+		expertos.addActionListener(this);
+		preferencias.addActionListener(this);
+		sonido.addActionListener(this);
+		salir.addActionListener(this);
+		
+		contenido.addActionListener(this);
+		ayuda.addActionListener(this);
+		
+		//-- Se agrega el menu a la barra de menu
+		menubar.add(archivo);
+		menubar.add(ayuda);
+		
+		//-- Se crea el grid de botones
+		this.grid = new Grid(10,10);
+		
+		//-- Se establecen los paneles
+		this.setJMenuBar(menubar);
+		this.getContentPane().add(this.grid,BorderLayout.CENTER);
+
+	    try { 
+	    	UIManager.setLookAndFeel(new WindowsLookAndFeel());
+	    	SwingUtilities.updateComponentTreeUI(this);
+	    } catch (UnsupportedLookAndFeelException e){
+	    	System.out.println("Error: Windows LookAndFeel no esta soportado");
+	    	this.dispose();
+	    }
 	}
 
-	public void mouseClicked(MouseEvent arg0) {
+	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		
-	}
-
-	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		Boton aux = (Boton)arg0.getSource();
-		if(arg0.getButton() == MouseEvent.BUTTON1){
-			aux.setStatus(Boton.CLICKED);
-			if(aux.value == Boton.BOMB){
-				aux.value = Boton.DEAD;
-				aux.setStatus(Boton.CLICKED);
-				
-				this.grid.uncoverBombs();
-			}
-		} else if (arg0.getButton() == MouseEvent.BUTTON3){ 
-			int action = (aux.status == Boton.UNCLICKED)?Boton.FLAGED:Boton.UNCLICKED;
-			aux.setStatus(action);
+		if(e.getSource()==salir){
+			this.dispose();
+		} else if (e.getSource() == nuevo){
+			this.grid.reset();
 		}
-	}
-
-	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void mouseDragged(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void mouseMoved(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
 	}
 	
 }
