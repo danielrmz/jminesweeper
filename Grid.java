@@ -31,7 +31,7 @@ public class Grid extends JPanel implements MouseListener {
 	 * Total de Bombas
 	 */
 	private int nbombas = 0;
-	
+	//TODO: en el frame de configuracion especificar la cantidad de bombas y anexar esto al randomBombs
 	/**
 	 *  Constructor 
 	 *  @param rows Cantidad Renglones
