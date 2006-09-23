@@ -201,6 +201,9 @@ public class Frame extends JFrame implements ActionListener {
 			break;
 		}
 		this.getContentPane().removeAll();
+		Frame.face.setIcon(Main.getIconImage("face_happy.jpg"));
+		this.getContentPane().add(principal,BorderLayout.NORTH);
+		
 		this.getContentPane().add(this.grid,BorderLayout.CENTER);
 		SwingUtilities.updateComponentTreeUI(this);
 		Frame.ACTIVE = true;
