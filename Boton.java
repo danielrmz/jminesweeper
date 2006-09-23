@@ -12,14 +12,16 @@ public class Boton extends JButton {
 	public static final int UNCLICKED = 0;
 	public static final int CLICKED = 1;
 	
-	private int status = 0; //-- Clicked o Unclicked [exceptuando el flag]
-	private int value = 0;  //-- Valor del cuadro -2 bomba -1 flag x>=0 numero 
+	private int status = 0; //-- Clicked, Unclicked o Flagged
+	private int value = 0;  //-- Valor del bomb -1, number x>=0, dead -2 [bomba con crucecita]
 	
-	public Boton(){
-
-	}
+	public int x;
+	public int y;
 	
-	public Boton(int status, int value){
+	/*
+	 * Constructor
+	 */
+	public Boton(int status, int value, int x, int y){
 		super(""+value);
 		this.status = (status != Boton.CLICKED && status != Boton.UNCLICKED && status!= Boton.FLAGED)?Boton.UNCLICKED:status;
 		this.value = value;
@@ -36,6 +38,7 @@ public class Boton extends JButton {
 	
 	public void setValue(int value){
 		this.value = value;
+		this.setText(value+"");
 	}
 	
 	public void setStatus(int status){
@@ -55,7 +58,8 @@ public class Boton extends JButton {
 			this.setIcon(Main.getIconImage("boton.jpg"));
 			
 		} else if(this.value>0) {
-			
+			ImageIcon img = Main.getIconImage(this.value+".jpg");
+			this.setIcon(img);
 			this.setText(this.value+"");
 			
 		} 

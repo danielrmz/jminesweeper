@@ -1,13 +1,10 @@
-
-
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
-
 /**
- * Clase que crea la cuadricula
+ * Clase que crea la cuadricula de botones
  * @author Revolutionary Software Developers
  */
 public class Grid extends JPanel implements MouseInputListener {
@@ -17,7 +14,7 @@ public class Grid extends JPanel implements MouseInputListener {
 	protected int rows;
 	protected int cols;
 	
-	public Boton[][] grid; // Arreglo de botones
+	private Boton[][] grid; // Arreglo de botones
 	
 	/**
 	 *  Constructor vacio
@@ -31,19 +28,16 @@ public class Grid extends JPanel implements MouseInputListener {
 	
 	/**
 	 * Crea la matriz de botones.
-	 *
 	 */
 	private void makeGrid(){
-		int [][] data = this.randomBombs();
+		int [][] data = this.enumeraTabla(this.randomBombs());
 		this.grid = new Boton[this.rows][this.cols];
 		
-		Toolkit toolkit = Toolkit.getDefaultToolkit();
-		Image image = toolkit.getImage(Main.ruta+"img/rifle.gif");
-		Cursor cursor = toolkit.createCustomCursor(image, new Point(0,0), "rifle");
+		Cursor cursor = Toolkit.getDefaultToolkit().createCustomCursor(Main.getImage("rifle.gif"), new Point(0,0), "rifle");
 		
 		for(int i=0;i<data.length;i++){
 			for(int j=0;j<data[i].length;j++){
-				this.grid[i][j] = new Boton(Boton.UNCLICKED,data[i][j]);
+				this.grid[i][j] = new Boton(Boton.UNCLICKED,data[i][j], i, j);
 				this.grid[i][j].addMouseListener(this);
 				this.grid[i][j].setCursor(cursor);
 	            this.add(this.grid[i][j]);
@@ -61,7 +55,7 @@ public class Grid extends JPanel implements MouseInputListener {
 		
 		for(int i=0;i<data.length;i++){
 			for(int j=0;j<data[i].length;j++){
-				boolean bomb = (Math.random()>0.5)?true:false;
+				boolean bomb = (Math.random()>0.8)?true:false;
 				if(bomb){
 					data[i][j] = -1;
 					total--;
@@ -72,11 +66,17 @@ public class Grid extends JPanel implements MouseInputListener {
 	}
 	
 	/**
-	 * Resetea el GRID
+	 * Resetea el grid de datos
 	 */
-	
 	public void reset(){
-		this.makeGrid();
+		int [][] data = this.enumeraTabla(this.randomBombs());
+		for(int i=0;i<this.grid.length;i++){
+			for(int j=0;j<this.grid[i].length;j++){
+				this.grid[i][j].setValue(data[i][j]);
+				this.grid[i][j].setStatus(Boton.UNCLICKED);
+			}
+		}
+		
 	}
 	
 	/**
@@ -93,13 +93,10 @@ public class Grid extends JPanel implements MouseInputListener {
 		}
 	}
 
-	public void mouseClicked(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	/**
+	 * Metodo del MouseInputListener que cambia el estatus del boton
+	 */
 	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
 		Boton aux = (Boton)arg0.getSource();
 		if(arg0.getButton() == MouseEvent.BUTTON1){
 			aux.setStatus(Boton.CLICKED);
@@ -107,6 +104,8 @@ public class Grid extends JPanel implements MouseInputListener {
 				aux.setValue(Boton.DEAD);
 				aux.setStatus(Boton.CLICKED);
 				this.uncoverBombs();
+			} else if(aux.getValue() == Boton.NUMBER){ 
+				this.descubreCeros(aux.x,aux.y);
 			}
 		} else if (arg0.getButton() == MouseEvent.BUTTON3){ 
 			int action = (aux.getStatus() == Boton.UNCLICKED)?Boton.FLAGED:Boton.UNCLICKED;
@@ -114,29 +113,86 @@ public class Grid extends JPanel implements MouseInputListener {
 		}
 	}
 
-	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
+	/**
+	 * Pondera la celda con la cantidad de bombas alrededor
+	 * 
+	 * @param datos
+	 * @param indiceI
+	 * @param indiceJ
+	 * @return total de bombas alrededor
+	 */
+	public int ponderaTabla(int[][] datos, int indiceI, int indiceJ){
+		int numero = 0;
+		for(int i=(indiceI-1); i<=(indiceI+1); i++ ){
+			for(int j=(indiceJ-1); j<=(indiceJ+1); j++){
+				try{
+					if(datos[i][j]==Boton.BOMB){
+						numero++;
+					}
+				}catch(ArrayIndexOutOfBoundsException aiobe){}
+			}
+			
+		}
+		return numero;
 	}
-
-	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
+	
+	/**
+	 * Enumera la tabla con las bombas alrededor
+	 * @param datos
+	 * @return matriz
+	 */
+	public int[][] enumeraTabla(int[][] datos){
+		int[][] matriz = datos;
+		for (int i=0; i<datos.length; i++){
+			for(int j=0; j<datos[i].length; j++){
+				if(matriz[i][j] != Boton.BOMB){
+					matriz[i][j]=ponderaTabla(matriz, i, j);
+				}
+			}
+		}
+		return matriz;
 	}
-
-	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
+	
+	/**
+	 * Despliega la tabla
+	 * @param datos
+	 */
+	public void despliegaTabla(){
+		for(int i = 0; i<this.cols; i++){
+			for(int j = 0; j<this.cols-1; j++){
+				System.out.print(this.grid[i][j].getValue()+"  ");
+			}
+			System.out.println(this.grid[i][this.cols-1].getValue());
+		}
 	}
-
-	public void mouseDragged(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
+	
+	/**
+	 * Abre las casillas vacias
+	 * @param indi
+	 * @param indj
+	 */
+	public void descubreCeros(int indi, int indj){
+		this.grid[indi][indj].setStatus(Boton.CLICKED);
+		for(int i=indi-1 ; i<=indi+1; i++){
+			for(int j=indj-1; j<=indj+1; j++){
+				try{
+					if(this.grid[i][j].getValue()==0 && this.grid[i][j].getStatus() != Boton.UNCLICKED){
+						descubreCeros(i, j);
+					}
+				}catch(ArrayIndexOutOfBoundsException aiobe){}
+				
+			}
+		}
 	}
-
-	public void mouseMoved(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	
+	/**
+	 * Metodos sin usar del MouseInputListener
+	 */
+	public void mouseClicked(MouseEvent arg0) {}
+	public void mouseReleased(MouseEvent arg0) {}
+	public void mouseEntered(MouseEvent arg0) {}
+	public void mouseExited(MouseEvent arg0) {}
+	public void mouseDragged(MouseEvent arg0) {}
+	public void mouseMoved(MouseEvent arg0) {}
 	
 }
