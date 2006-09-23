@@ -89,6 +89,7 @@ public class Boton extends JButton {
 		this.setBorderPainted(false);
 		this.setCursor("rifle.gif");
 		this.setMaximumSize(new Dimension(16,16));
+		this.setFocusable(false);
 	}
 	
 	/**
@@ -177,7 +178,6 @@ public class Boton extends JButton {
 		} else if(this.value>0) {
 			ImageIcon img = Main.getIconImage(this.value+".jpg");
 			this.setIcon(img);
-			//this.setText(value+"");
 		} 
 	}
 
