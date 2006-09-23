@@ -33,7 +33,7 @@ public class Grid extends JPanel implements MouseInputListener {
 		int [][] data = this.enumeraTabla(this.randomBombs());
 		this.grid = new Boton[this.rows][this.cols];
 		
-		Cursor cursor = Toolkit.getDefaultToolkit().createCustomCursor(Main.getImage("rifle.gif"), new Point(0,0), "rifle");
+		Cursor cursor = Toolkit.getDefaultToolkit().createCustomCursor(Main.getImage("rifle.gif"), new Point(0,5), "rifle");
 		
 		for(int i=0;i<data.length;i++){
 			for(int j=0;j<data[i].length;j++){
