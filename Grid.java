@@ -83,6 +83,7 @@ public class Grid extends JPanel implements MouseInputListener {
 	 * Descubre las bombas 
 	 */
 	public void uncoverBombs(){
+		Frame.ACTIVE = false;
 		for(int i=0;i<grid.length;i++){
 			for(int j=0;j<grid[i].length;j++){
 				int value = grid[i][j].getValue();
@@ -98,18 +99,25 @@ public class Grid extends JPanel implements MouseInputListener {
 	 */
 	public void mousePressed(MouseEvent arg0) {
 		Boton aux = (Boton)arg0.getSource();
-		if(arg0.getButton() == MouseEvent.BUTTON1){
-			aux.setStatus(Boton.CLICKED);
-			if(aux.getValue() == Boton.BOMB){
-				aux.setValue(Boton.DEAD);
+		if(Frame.ACTIVE){
+			if(arg0.getButton() == MouseEvent.BUTTON1 && aux.getStatus()==Boton.UNCLICKED){
+				
 				aux.setStatus(Boton.CLICKED);
-				this.uncoverBombs();
-			} else if(aux.getValue() == Boton.NUMBER){ 
-				this.descubreCeros(aux.x,aux.y);
+				if(aux.getValue() == Boton.BOMB){
+					aux.setValue(Boton.DEAD);
+					aux.setStatus(Boton.CLICKED);
+					this.uncoverBombs();
+					Frame.face.setIcon(Main.getIconImage("face_lose.jpg"));
+				} else if(aux.getValue() == Boton.NUMBER){ 
+					this.descubreCeros(aux.x,aux.y);
+				}
+				
+			} else if (arg0.getButton() == MouseEvent.BUTTON3 && (aux.getStatus() == Boton.UNCLICKED || aux.getStatus() == Boton.FLAGED )){ 
+				int action = (aux.getStatus() == Boton.UNCLICKED)?Boton.FLAGED:Boton.UNCLICKED;
+				aux.setStatus(action);
+			} else { 
+				Frame.face.setIcon(Main.getIconImage("face_surprised.jpg"));
 			}
-		} else if (arg0.getButton() == MouseEvent.BUTTON3){ 
-			int action = (aux.getStatus() == Boton.UNCLICKED)?Boton.FLAGED:Boton.UNCLICKED;
-			aux.setStatus(action);
 		}
 	}
 
@@ -176,9 +184,9 @@ public class Grid extends JPanel implements MouseInputListener {
 		for(int i=indi-1 ; i<=indi+1; i++){
 			for(int j=indj-1; j<=indj+1; j++){
 				try{
-					if(this.grid[i][j].getValue()==0 && this.grid[i][j].getStatus() != Boton.UNCLICKED){
+					if(this.grid[i][j].getValue() == 0 && this.grid[i][j].getStatus() == Boton.UNCLICKED){
 						descubreCeros(i, j);
-					}
+					} 
 				}catch(ArrayIndexOutOfBoundsException aiobe){}
 				
 			}

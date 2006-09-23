@@ -70,16 +70,32 @@ public class Frame extends JFrame implements ActionListener {
 	private JMenuItem sobre = new JMenuItem("Sobre...");
 	
 	/**
+	 * Estatus del juego, activo o inactivo
+	 */
+	public static boolean ACTIVE = true;
+	
+	/**
+	 * Panel del grid y de los contadores/carita
+	 */
+	public JPanel principal = new JPanel(new GridLayout(1,3));
+	
+	/**
+	 * Face to restart
+	 */
+	public static JButton face = new JButton();
+	
+	/**
 	 * Constructor, Inicializa el frame de la aplicación
 	 */
 	public Frame() {
 		//-- Preferencias de la pantalla
 		this.setBackground(Color.white);
-		this.setSize(670,600);
+		//this.setSize(670,600);
 		this.setTitle("Buscaminas");
 		this.setLayout(new BorderLayout());
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setResizable(false);
+		this.setIconImage(Main.getImage("logo.gif"));
 		
 		//-- Menus
 		JMenu archivo = new JMenu("Archivo");
@@ -123,13 +139,20 @@ public class Frame extends JFrame implements ActionListener {
 		menubar.add(archivo);
 		menubar.add(ayuda);
 		
-		//-- Se crea el grid de botones
-		this.grid = new Grid(10,10);
+		//-- Se crea el grid de botones de acuerdo al nivel
+		this.setLevel(1);
 		
 		//-- Se establecen los paneles
 		this.setJMenuBar(menubar);
-		this.getContentPane().add(this.grid,BorderLayout.CENTER);
-
+		
+		//-- Estadisticas
+		Frame.face.setIcon(Main.getIconImage("face_happy.jpg"));
+		Frame.face.setBorderPainted(false);
+		Frame.face.addActionListener(this);
+		
+		principal.add(Frame.face);
+		this.getContentPane().add(principal,BorderLayout.NORTH);
+		
 		//-- Look n' Feel a la Windows Style
 	    try { 
 	    	UIManager.setLookAndFeel(new WindowsLookAndFeel());
@@ -147,9 +170,41 @@ public class Frame extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource()==salir){
 			this.dispose();
-		} else if (e.getSource() == nuevo){
+		} else if (e.getSource() == nuevo || e.getSource() == Frame.face){
+			Frame.face.setIcon(Main.getIconImage("face_happy.jpg"));
+			Frame.ACTIVE = true;
 			this.grid.reset();
+		} else if(e.getSource() == principiantes){
+			this.setLevel(1);
+		} else if(e.getSource() == intermedios){
+			this.setLevel(2);
+		} else if(e.getSource() == expertos){
+			this.setLevel(3);
 		}
+	}
+	
+	/**
+	 * Nivel de Juego
+	 */
+	public void setLevel(int nivel){
+		switch(nivel){
+		case 1: //-- Principiante 
+			this.grid = new Grid(9,9);
+			this.setSize(180,230);
+			break;
+		case 2: //-- Intermedio
+			this.grid = new Grid(16,16);
+			this.setSize(300,330);
+			break;
+		case 3: //-- Avanzado
+			this.grid = new Grid(16,30);
+			this.setSize(600,330);
+			break;
+		}
+		//this.principal.removeAll();
+		this.getContentPane().add(this.grid,BorderLayout.CENTER);
+		SwingUtilities.updateComponentTreeUI(this);
+		Frame.ACTIVE = true;
 	}
 	
 }

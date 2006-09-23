@@ -1,5 +1,6 @@
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.io.File;
 
 import javax.swing.ImageIcon;
 
@@ -8,12 +9,15 @@ import javax.swing.ImageIcon;
  * @author Revolutionary Software Developers
  */
 public class Main {
-	public static String ruta = "c:/fundamentosjava/JMinesweeper/";
+	public static String ruta = "";
 	
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		File dir1 = new File ("");
+		ruta = dir1.getAbsolutePath()+"/";
+		
 		Frame buscaminas = new Frame();
 		buscaminas.setVisible(true);
 	}
