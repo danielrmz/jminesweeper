@@ -1,23 +1,36 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.event.*;
 
 /**
  * Clase que crea la cuadricula de botones
- * @author Revolutionary Software Developers
+ * @author Revolution Software Developers
  */
-public class Grid extends JPanel implements MouseInputListener {
-	
+public class Grid extends JPanel implements MouseListener {
+	/**
+	 * Constante de eclipse
+	 */
 	private static final long serialVersionUID = 1L;
 	
-	protected int rows;
-	protected int cols;
+	/**
+	 * Cantidad de Renglones
+	 */
+	private int rows;
 	
+	/**
+	 * Cantidad de Columnas
+	 */
+	private int cols;
+	
+	/**
+	 * Arreglo de Botones
+	 */
 	private Boton[][] grid; // Arreglo de botones
 	
 	/**
-	 *  Constructor vacio
+	 *  Constructor 
+	 *  @param rows Cantidad Renglones
+	 *  @param cols Cantidad Columnas
 	 */
 	public Grid(int rows,int cols) {
 		this.rows = rows;
@@ -33,14 +46,11 @@ public class Grid extends JPanel implements MouseInputListener {
 		int [][] data = this.enumeraTabla(this.randomBombs());
 		this.grid = new Boton[this.rows][this.cols];
 		
-		Cursor cursor = Toolkit.getDefaultToolkit().createCustomCursor(Main.getImage("rifle.gif"), new Point(0,5), "rifle");
-		
 		for(int i=0;i<data.length;i++){
 			for(int j=0;j<data[i].length;j++){
 				this.grid[i][j] = new Boton(Boton.UNCLICKED,data[i][j], i, j);
 				this.grid[i][j].addMouseListener(this);
-				this.grid[i][j].setCursor(cursor);
-	            this.add(this.grid[i][j]);
+				 this.add(this.grid[i][j]);
 			}
 		}
 	}
@@ -48,6 +58,8 @@ public class Grid extends JPanel implements MouseInputListener {
 	/**
 	 * Genera las bombas aleatoriamente
 	 * la cantidad de bombas es el 30% del total.
+	 * 
+	 * @return bombas aleatorias
 	 */
 	private int[][] randomBombs(){
 		int [][]data = new int[this.rows][this.cols];
@@ -66,24 +78,11 @@ public class Grid extends JPanel implements MouseInputListener {
 	}
 	
 	/**
-	 * Resetea el grid de datos
-	 */
-	public void reset(){
-		int [][] data = this.enumeraTabla(this.randomBombs());
-		for(int i=0;i<this.grid.length;i++){
-			for(int j=0;j<this.grid[i].length;j++){
-				this.grid[i][j].setValue(data[i][j]);
-				this.grid[i][j].setStatus(Boton.UNCLICKED);
-			}
-		}
-		
-	}
-	
-	/**
 	 * Descubre las bombas 
 	 */
-	public void uncoverBombs(){
-		Frame.ACTIVE = false;
+	private void uncoverBombs(){
+		Frame.setActive(false);
+		
 		for(int i=0;i<grid.length;i++){
 			for(int j=0;j<grid[i].length;j++){
 				int value = grid[i][j].getValue();
@@ -93,34 +92,7 @@ public class Grid extends JPanel implements MouseInputListener {
 			}
 		}
 	}
-
-	/**
-	 * Metodo del MouseInputListener que cambia el estatus del boton
-	 */
-	public void mousePressed(MouseEvent arg0) {
-		Boton aux = (Boton)arg0.getSource();
-		if(Frame.ACTIVE){
-			if(arg0.getButton() == MouseEvent.BUTTON1 && aux.getStatus()==Boton.UNCLICKED){
-				
-				aux.setStatus(Boton.CLICKED);
-				if(aux.getValue() == Boton.BOMB){
-					aux.setValue(Boton.DEAD);
-					aux.setStatus(Boton.CLICKED);
-					this.uncoverBombs();
-					Frame.face.setIcon(Main.getIconImage("face_lose.jpg"));
-				} else if(aux.getValue() == Boton.NUMBER){ 
-					this.descubreCeros(aux.x,aux.y);
-				}
-				
-			} else if (arg0.getButton() == MouseEvent.BUTTON3 && (aux.getStatus() == Boton.UNCLICKED || aux.getStatus() == Boton.FLAGED )){ 
-				int action = (aux.getStatus() == Boton.UNCLICKED)?Boton.FLAGED:Boton.UNCLICKED;
-				aux.setStatus(action);
-			} else { 
-				Frame.face.setIcon(Main.getIconImage("face_surprised.jpg"));
-			}
-		}
-	}
-
+	
 	/**
 	 * Pondera la celda con la cantidad de bombas alrededor
 	 * 
@@ -129,7 +101,7 @@ public class Grid extends JPanel implements MouseInputListener {
 	 * @param indiceJ
 	 * @return total de bombas alrededor
 	 */
-	public int ponderaTabla(int[][] datos, int indiceI, int indiceJ){
+	private int ponderaTabla(int[][] datos, int indiceI, int indiceJ){
 		int numero = 0;
 		for(int i=(indiceI-1); i<=(indiceI+1); i++ ){
 			for(int j=(indiceJ-1); j<=(indiceJ+1); j++){
@@ -149,7 +121,7 @@ public class Grid extends JPanel implements MouseInputListener {
 	 * @param datos
 	 * @return matriz
 	 */
-	public int[][] enumeraTabla(int[][] datos){
+	private int[][] enumeraTabla(int[][] datos){
 		int[][] matriz = datos;
 		for (int i=0; i<datos.length; i++){
 			for(int j=0; j<datos[i].length; j++){
@@ -162,10 +134,9 @@ public class Grid extends JPanel implements MouseInputListener {
 	}
 	
 	/**
-	 * Despliega la tabla
-	 * @param datos
+	 * Despliega la tabla en Consola
 	 */
-	public void despliegaTabla(){
+	private void despliegaTabla(){
 		for(int i = 0; i<this.cols; i++){
 			for(int j = 0; j<this.cols-1; j++){
 				System.out.print(this.grid[i][j].getValue()+"  ");
@@ -179,7 +150,7 @@ public class Grid extends JPanel implements MouseInputListener {
 	 * @param indi
 	 * @param indj
 	 */
-	public void descubreCeros(int indi, int indj){
+	private void descubreCeros(int indi, int indj){
 		this.grid[indi][indj].setStatus(Boton.CLICKED);
 		for(int i=indi-1 ; i<=indi+1; i++){
 			for(int j=indj-1; j<=indj+1; j++){
@@ -194,7 +165,55 @@ public class Grid extends JPanel implements MouseInputListener {
 	}
 	
 	/**
-	 * Metodos sin usar del MouseInputListener
+	 * Resetea el grid de datos
+	 */
+	public void reset(){
+		int [][] data = this.enumeraTabla(this.randomBombs());
+		for(int i=0;i<this.grid.length;i++){
+			for(int j=0;j<this.grid[i].length;j++){
+				this.grid[i][j].setValue(data[i][j]);
+				this.grid[i][j].setStatus(Boton.UNCLICKED);
+			}
+		}
+		
+	}
+	/**
+	 * Metodo del MouseInputListener que cambia el estatus del boton
+	 */
+	public void mousePressed(MouseEvent arg0) {
+		Boton aux = (Boton)arg0.getSource();
+		//-- Si esta activo el juego entonces que haga de acuerdo al boton que le pico
+		if(Frame.getActive()){
+			//-- Boton Izquierdo y si no ha sido oprimido
+			if(arg0.getButton() == MouseEvent.BUTTON1 && aux.getStatus()==Boton.UNCLICKED){
+				aux.setStatus(Boton.CLICKED);
+				//-- Si es una bomba cambiale el estatus a DEAD[para que tenga otro bg] y presionala
+				if(aux.getValue() == Boton.BOMB){
+					aux.setValue(Boton.DEAD);
+					aux.setStatus(Boton.CLICKED);
+					//-- Descubre las demas bombas
+					this.uncoverBombs();
+					//-- Cambia la carilla
+					Frame.face.setIcon(Main.getIconImage("face_lose.jpg"));
+				} else if(aux.getValue() == Boton.NUMBER){ 
+					//-- Descubre 0s si es casilla vacia
+					this.descubreCeros(aux.x,aux.y);
+				}
+			
+			//-- Si es boton derecho poner bandera
+			} else if (arg0.getButton() == MouseEvent.BUTTON3 && (aux.getStatus() == Boton.UNCLICKED || aux.getStatus() == Boton.FLAGED )){ 
+				int action = (aux.getStatus() == Boton.UNCLICKED)?Boton.FLAGED:Boton.UNCLICKED;
+				//TODO: Restar o aumentar las banderas aqui de acuerdo a lo q le haya picado
+				aux.setStatus(action);
+			} else { 
+				//-- Si tiene bandera y le pico poner carilla sorprendida
+				Frame.face.setIcon(Main.getIconImage("face_surprised.jpg"));
+			}
+		}
+	}
+	
+	/**
+	 * Metodos sin usar del MouseListener
 	 */
 	public void mouseClicked(MouseEvent arg0) {}
 	public void mouseReleased(MouseEvent arg0) {}
@@ -202,5 +221,5 @@ public class Grid extends JPanel implements MouseInputListener {
 	public void mouseExited(MouseEvent arg0) {}
 	public void mouseDragged(MouseEvent arg0) {}
 	public void mouseMoved(MouseEvent arg0) {}
-	
+	//TODO: Ver si se pueden quitar estos con el MouseInputListener de JAVAX
 }
