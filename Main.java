@@ -6,24 +6,28 @@ import javax.swing.ImageIcon;
 
 /**
  * Inicializa la aplicacion del buscaminas
- * @author Revolutionary Software Developers
+ * @author Revolution Software Developers
+ * @version 1.0 Revision 12
  */
 public class Main {
-	public static String ruta = "";
+	
+	/**
+	 * Ruta de la Aplicación
+	 */
+	public static String ruta = (new File ("")).getAbsolutePath()+"/";
 	
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		File dir1 = new File ("");
-		ruta = dir1.getAbsolutePath()+"/";
-		
-		Frame buscaminas = new Frame();
+		GameFrame buscaminas = new GameFrame();
 		buscaminas.setVisible(true);
 	}
 
 	/**
-	 * Metodos Auxiliares fijos
+	 * Regresa una imagen del directorio img/ dando nadamas su nombre
+	 * @param filename
+	 * @return image
 	 */
 	public static Image getImage(String filename){
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
@@ -31,6 +35,11 @@ public class Main {
 		return image;
 	}
 	
+	/**
+	 * Regresa el ImageIcon de una imagen especificada
+	 * @param filename
+	 * @return image
+	 */
 	public static ImageIcon getIconImage(String filename){	
 		ImageIcon image = new ImageIcon(Main.ruta+"img/"+filename);
 		return image;
