@@ -3,8 +3,12 @@ import java.awt.event.*;
 import javax.swing.*;
 import com.sun.java.swing.plaf.windows.*;
 
-
+/**
+ * Clase Frame donde se crea la cuadricula y los menus de acceso al juego
+ * @author Revolutionary Software Developers
+ */
 public class Frame extends JFrame implements ActionListener {
+	
 	/**
 	 * Variable identificadora del Eclipse
 	 */
@@ -19,7 +23,6 @@ public class Frame extends JFrame implements ActionListener {
 	 * Menu Bar
 	 */
 	JMenuBar menubar = new JMenuBar();
-	
 	
 	/**
 	 * Menu Item Nuevo
@@ -72,7 +75,7 @@ public class Frame extends JFrame implements ActionListener {
 	public Frame() {
 		//-- Preferencias de la pantalla
 		this.setBackground(Color.white);
-		this.setSize(470,400);
+		this.setSize(670,600);
 		this.setTitle("Buscaminas");
 		this.setLayout(new BorderLayout());
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -82,6 +85,7 @@ public class Frame extends JFrame implements ActionListener {
 		JMenu archivo = new JMenu("Archivo");
 		JMenu ayuda = new JMenu("Ayuda");
 		
+		//-- Mnemonicos para el acceso rapido a los menus
 		archivo.setMnemonic('A');
 		ayuda.setMnemonic('y');
 		
@@ -126,6 +130,7 @@ public class Frame extends JFrame implements ActionListener {
 		this.setJMenuBar(menubar);
 		this.getContentPane().add(this.grid,BorderLayout.CENTER);
 
+		//-- Look n' Feel a la Windows Style
 	    try { 
 	    	UIManager.setLookAndFeel(new WindowsLookAndFeel());
 	    	SwingUtilities.updateComponentTreeUI(this);
@@ -135,8 +140,11 @@ public class Frame extends JFrame implements ActionListener {
 	    }
 	}
 
+	/**
+	 * Action Performed al hacer click en algun item del menu
+	 * @param e Action Event
+	 */
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
 		if(e.getSource()==salir){
 			this.dispose();
 		} else if (e.getSource() == nuevo){
