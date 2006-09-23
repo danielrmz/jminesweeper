@@ -177,6 +177,9 @@ public class Grid extends JPanel implements MouseListener {
 					if(this.grid[i][j].getValue() == 0 && this.grid[i][j].getStatus() == Boton.UNCLICKED){
 						descubreCeros(i, j);
 					} 
+					else if (this.grid[i][j].getValue()!=0 && this.grid[i][j].getStatus()==Boton.UNCLICKED){
+						this.grid[i][j].setStatus(Boton.CLICKED);
+					}
 				}catch(ArrayIndexOutOfBoundsException aiobe){}
 				
 			}
