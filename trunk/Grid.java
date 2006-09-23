@@ -37,6 +37,7 @@ public class Grid extends JPanel implements MouseListener {
 		this.cols = cols;
 		this.setLayout(new GridLayout(rows,cols));
 		this.makeGrid();
+		this.despliegaTabla();
 	}
 	
 	/**
@@ -81,7 +82,7 @@ public class Grid extends JPanel implements MouseListener {
 	 * Descubre las bombas 
 	 */
 	private void uncoverBombs(){
-		Frame.setActive(false);
+		GameFrame.setActive(false);
 		
 		for(int i=0;i<grid.length;i++){
 			for(int j=0;j<grid[i].length;j++){
@@ -137,12 +138,17 @@ public class Grid extends JPanel implements MouseListener {
 	 * Despliega la tabla en Consola
 	 */
 	private void despliegaTabla(){
-		for(int i = 0; i<this.cols; i++){
-			for(int j = 0; j<this.cols-1; j++){
-				System.out.print(this.grid[i][j].getValue()+"  ");
+		System.out.println("=========================");
+		for(int i = 0; i<this.rows; i++){
+			for(int j = 0; j<this.cols; j++){
+				String value = ""+this.grid[i][j].getValue();
+				value = (value.equals("-1"))?"*":value;
+				System.out.print(value+"  ");
 			}
-			System.out.println(this.grid[i][this.cols-1].getValue());
+			System.out.println();
+		//	System.out.println(this.grid[i][this.cols-1].getValue());
 		}
+		System.out.println("=========================");
 	}
 	
 	/**
@@ -183,7 +189,7 @@ public class Grid extends JPanel implements MouseListener {
 	public void mousePressed(MouseEvent arg0) {
 		Boton aux = (Boton)arg0.getSource();
 		//-- Si esta activo el juego entonces que haga de acuerdo al boton que le pico
-		if(Frame.getActive()){
+		if(GameFrame.getActive()){
 			//-- Boton Izquierdo y si no ha sido oprimido
 			if(arg0.getButton() == MouseEvent.BUTTON1 && aux.getStatus()==Boton.UNCLICKED){
 				aux.setStatus(Boton.CLICKED);
@@ -194,7 +200,7 @@ public class Grid extends JPanel implements MouseListener {
 					//-- Descubre las demas bombas
 					this.uncoverBombs();
 					//-- Cambia la carilla
-					Frame.face.setIcon(Main.getIconImage("face_lose.jpg"));
+					GameFrame.face.setIcon(Main.getIconImage("face_lose.jpg"));
 				} else if(aux.getValue() == Boton.NUMBER){ 
 					//-- Descubre 0s si es casilla vacia
 					this.descubreCeros(aux.x,aux.y);
@@ -207,7 +213,7 @@ public class Grid extends JPanel implements MouseListener {
 				aux.setStatus(action);
 			} else { 
 				//-- Si tiene bandera y le pico poner carilla sorprendida
-				Frame.face.setIcon(Main.getIconImage("face_surprised.jpg"));
+				GameFrame.face.setIcon(Main.getIconImage("face_surprised.jpg"));
 			}
 		}
 	}

@@ -7,7 +7,7 @@ import com.sun.java.swing.plaf.windows.*;
  * Clase Frame donde se crea la cuadricula y los menus de acceso al juego
  * @author Revolution Software Developers
  */
-public class Frame extends JFrame implements ActionListener {
+public class GameFrame extends JFrame implements ActionListener {
 	
 	/**
 	 * Variable identificadora del Eclipse
@@ -87,7 +87,7 @@ public class Frame extends JFrame implements ActionListener {
 	/**
 	 * Constructor, Inicializa el frame de la aplicación
 	 */
-	public Frame() {
+	public GameFrame() {
 		//-- Preferencias de la pantalla
 		this.setBackground(Color.white);
 		this.setTitle("Buscaminas");
@@ -145,11 +145,11 @@ public class Frame extends JFrame implements ActionListener {
 		this.setJMenuBar(menubar);
 		
 		//-- Estadisticas
-		Frame.face.setIcon(Main.getIconImage("face_happy.jpg"));
-		Frame.face.setBorderPainted(false);
-		Frame.face.addActionListener(this);
+		GameFrame.face.setIcon(Main.getIconImage("face_happy.jpg"));
+		GameFrame.face.setBorderPainted(false);
+		GameFrame.face.addActionListener(this);
 		
-		principal.add(Frame.face);
+		principal.add(GameFrame.face);
 		this.getContentPane().add(principal,BorderLayout.NORTH);
 		
 		//-- Look n' Feel a la Windows Style
@@ -170,7 +170,7 @@ public class Frame extends JFrame implements ActionListener {
 		
 		if(e.getSource()==salir){
 			this.dispose();
-		} else if (e.getSource() == nuevo || e.getSource() == Frame.face){
+		} else if (e.getSource() == nuevo || e.getSource() == GameFrame.face){
 			this.gameRestart(true);
 		} else if(e.getSource() == principiantes){
 			this.setLevel(1);
@@ -224,8 +224,8 @@ public class Frame extends JFrame implements ActionListener {
 	 * Se encarga de poner el juego activo, asi como reiniciar los contadores
 	 */
 	private void gameRestart(boolean gridreset){
-		Frame.face.setIcon(Main.getIconImage("face_happy.jpg"));
-		Frame.setActive(true);
+		GameFrame.face.setIcon(Main.getIconImage("face_happy.jpg"));
+		GameFrame.setActive(true);
 		if(gridreset){
 			this.grid.reset();
 		}
@@ -237,7 +237,7 @@ public class Frame extends JFrame implements ActionListener {
 	 * @return
 	 */
 	public static boolean getActive(){
-		return Frame.ACTIVE;
+		return GameFrame.ACTIVE;
 	}
 	
 	/**
@@ -245,6 +245,6 @@ public class Frame extends JFrame implements ActionListener {
 	 * @param active
 	 */
 	public static void setActive(boolean active){
-		Frame.ACTIVE = active;
+		GameFrame.ACTIVE = active;
 	}
 }
