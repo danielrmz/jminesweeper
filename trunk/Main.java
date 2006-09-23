@@ -17,10 +17,15 @@ public class Main {
 	public static String ruta = (new File ("")).getAbsolutePath()+"/";
 	
 	/**
+	 * GameFrame
+	 */
+	public static GameFrame buscaminas;
+	
+	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		GameFrame buscaminas = new GameFrame();
+		buscaminas = new GameFrame();
 		buscaminas.setVisible(true);
 	}
 

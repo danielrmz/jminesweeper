@@ -89,12 +89,12 @@ public class GameFrame extends JFrame implements ActionListener {
 	 */
 	public GameFrame() {
 		//-- Preferencias de la pantalla
-		this.setBackground(Color.white);
 		this.setTitle("Buscaminas");
 		this.setLayout(new BorderLayout());
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setResizable(false);
 		this.setIconImage(Main.getImage("logo.gif"));
+		this.setLocation(new Point(20,20));
 		
 		//-- Menus
 		JMenu archivo = new JMenu("Archivo");
@@ -132,7 +132,7 @@ public class GameFrame extends JFrame implements ActionListener {
 		salir.addActionListener(this);
 		
 		contenido.addActionListener(this);
-		ayuda.addActionListener(this);
+		sobre.addActionListener(this);
 		
 		//-- Se agrega el menu a la barra de menu
 		menubar.add(archivo);
@@ -184,6 +184,11 @@ public class GameFrame extends JFrame implements ActionListener {
 				//-- Se ejecuta internamente el comando html helper dada la ruta del archivo
 				run.exec("hh ms-its:"+Main.ruta+"winmine.chm");
 			} catch (Exception ex) {}
+		} else if(e.getSource() == sobre){
+			Main.buscaminas.setEnabled(false);
+			AboutFrame a = new AboutFrame();
+			a.setVisible(true);
+			
 		}
 	}
 	
@@ -195,15 +200,15 @@ public class GameFrame extends JFrame implements ActionListener {
 		switch(nivel){
 		case 1: //-- Principiante 
 			this.grid = new Grid(9,9);
-			this.setSize(180,230);
+			this.setSize(150,230);
 			break;
 		case 2: //-- Intermedio
 			this.grid = new Grid(16,16);
-			this.setSize(300,330);
+			this.setSize(270,330);
 			break;
 		case 3: //-- Avanzado
 			this.grid = new Grid(16,30);
-			this.setSize(600,330);
+			this.setSize(510,330);
 			break;
 		}
 		//-- Se remueven los contenidos

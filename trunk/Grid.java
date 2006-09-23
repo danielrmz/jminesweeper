@@ -28,6 +28,11 @@ public class Grid extends JPanel implements MouseListener {
 	private Boton[][] grid; // Arreglo de botones
 	
 	/**
+	 * Total de Bombas
+	 */
+	private int nbombas = 0;
+	
+	/**
 	 *  Constructor 
 	 *  @param rows Cantidad Renglones
 	 *  @param cols Cantidad Columnas
@@ -138,17 +143,21 @@ public class Grid extends JPanel implements MouseListener {
 	 * Despliega la tabla en Consola
 	 */
 	private void despliegaTabla(){
-		System.out.println("=========================");
+		String separadores = "";
+		for(int i = 0; i<this.cols; i++){
+			separadores += "===";
+		}
+		
+		System.out.println(separadores);
 		for(int i = 0; i<this.rows; i++){
+			System.out.print(" ");
 			for(int j = 0; j<this.cols; j++){
-				String value = ""+this.grid[i][j].getValue();
-				value = (value.equals("-1"))?"*":value;
+				String value = ((""+this.grid[i][j].getValue()).equals("-1"))?"*":this.grid[i][j].getValue()+"";
 				System.out.print(value+"  ");
 			}
 			System.out.println();
-		//	System.out.println(this.grid[i][this.cols-1].getValue());
 		}
-		System.out.println("=========================");
+		System.out.println(separadores);
 	}
 	
 	/**
@@ -157,10 +166,14 @@ public class Grid extends JPanel implements MouseListener {
 	 * @param indj
 	 */
 	private void descubreCeros(int indi, int indj){
+		//-- Se abre la casilla actual
 		this.grid[indi][indj].setStatus(Boton.CLICKED);
+		
+		//-- Se verifica alrededor de ella para seguir abriendo
 		for(int i=indi-1 ; i<=indi+1; i++){
 			for(int j=indj-1; j<=indj+1; j++){
 				try{
+					//-- Si es una casilla vacia y no ha sido abierta se expande
 					if(this.grid[i][j].getValue() == 0 && this.grid[i][j].getStatus() == Boton.UNCLICKED){
 						descubreCeros(i, j);
 					} 
@@ -174,7 +187,10 @@ public class Grid extends JPanel implements MouseListener {
 	 * Resetea el grid de datos
 	 */
 	public void reset(){
+		//-- Genera nuevas bombas
 		int [][] data = this.enumeraTabla(this.randomBombs());
+		
+		//-- Resetea la cuadricula actual, dandole valores y reestableciendo estatus
 		for(int i=0;i<this.grid.length;i++){
 			for(int j=0;j<this.grid[i].length;j++){
 				this.grid[i][j].setValue(data[i][j]);
@@ -182,11 +198,13 @@ public class Grid extends JPanel implements MouseListener {
 			}
 		}
 		
+		this.despliegaTabla();
 	}
 	/**
 	 * Metodo del MouseInputListener que cambia el estatus del boton
 	 */
 	public void mousePressed(MouseEvent arg0) {
+		
 		Boton aux = (Boton)arg0.getSource();
 		//-- Si esta activo el juego entonces que haga de acuerdo al boton que le pico
 		if(GameFrame.getActive()){
@@ -211,7 +229,7 @@ public class Grid extends JPanel implements MouseListener {
 				int action = (aux.getStatus() == Boton.UNCLICKED)?Boton.FLAGED:Boton.UNCLICKED;
 				//TODO: Restar o aumentar las banderas aqui de acuerdo a lo q le haya picado
 				aux.setStatus(action);
-			} else { 
+			} else if(aux.getStatus() == Boton.FLAGED){ 
 				//-- Si tiene bandera y le pico poner carilla sorprendida
 				GameFrame.face.setIcon(Main.getIconImage("face_surprised.jpg"));
 			}
@@ -222,7 +240,9 @@ public class Grid extends JPanel implements MouseListener {
 	 * Metodos sin usar del MouseListener
 	 */
 	public void mouseClicked(MouseEvent arg0) {}
-	public void mouseReleased(MouseEvent arg0) {}
+	public void mouseReleased(MouseEvent arg0) {
+		GameFrame.face.setIcon(Main.getIconImage("face_happy.jpg"));
+	}
 	public void mouseEntered(MouseEvent arg0) {}
 	public void mouseExited(MouseEvent arg0) {}
 	public void mouseDragged(MouseEvent arg0) {}
