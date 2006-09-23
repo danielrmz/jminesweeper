@@ -5,7 +5,7 @@ import com.sun.java.swing.plaf.windows.*;
 
 /**
  * Clase Frame donde se crea la cuadricula y los menus de acceso al juego
- * @author Revolutionary Software Developers
+ * @author Revolution Software Developers
  */
 public class Frame extends JFrame implements ActionListener {
 	
@@ -167,25 +167,31 @@ public class Frame extends JFrame implements ActionListener {
 	 * @param e Action Event
 	 */
 	public void actionPerformed(ActionEvent e) {
+		
 		if(e.getSource()==salir){
 			this.dispose();
 		} else if (e.getSource() == nuevo || e.getSource() == Frame.face){
-			Frame.face.setIcon(Main.getIconImage("face_happy.jpg"));
-			Frame.ACTIVE = true;
-			this.grid.reset();
+			this.gameRestart(true);
 		} else if(e.getSource() == principiantes){
 			this.setLevel(1);
 		} else if(e.getSource() == intermedios){
 			this.setLevel(2);
 		} else if(e.getSource() == expertos){
 			this.setLevel(3);
+		} else if(e.getSource() == contenido){
+			Runtime run = Runtime.getRuntime();
+			try { 
+				//-- Se ejecuta internamente el comando html helper dada la ruta del archivo
+				run.exec("hh ms-its:"+Main.ruta+"winmine.chm");
+			} catch (Exception ex) {}
 		}
 	}
 	
 	/**
-	 * Nivel de Juego
+	 * Nivel de Juego, 
+	 * se crea un nuevo grid, y se añade al canvas, se modifica también el tamaño del juego
 	 */
-	public void setLevel(int nivel){
+	private void setLevel(int nivel){
 		switch(nivel){
 		case 1: //-- Principiante 
 			this.grid = new Grid(9,9);
@@ -200,13 +206,45 @@ public class Frame extends JFrame implements ActionListener {
 			this.setSize(600,330);
 			break;
 		}
+		//-- Se remueven los contenidos
 		this.getContentPane().removeAll();
-		Frame.face.setIcon(Main.getIconImage("face_happy.jpg"));
-		this.getContentPane().add(principal,BorderLayout.NORTH);
 		
+		//-- Se agregan los componentes
+		this.getContentPane().add(principal,BorderLayout.NORTH);
 		this.getContentPane().add(this.grid,BorderLayout.CENTER);
+		
+		//-- Se actualiza la interfaz
 		SwingUtilities.updateComponentTreeUI(this);
-		Frame.ACTIVE = true;
+		
+		//-- El juego se activa [por si habia perdido]
+		this.gameRestart(false);
 	}
 	
+	/**
+	 * Se encarga de poner el juego activo, asi como reiniciar los contadores
+	 */
+	private void gameRestart(boolean gridreset){
+		Frame.face.setIcon(Main.getIconImage("face_happy.jpg"));
+		Frame.setActive(true);
+		if(gridreset){
+			this.grid.reset();
+		}
+		//TODO: Agregar inicializacion de contadores aqui
+	}
+	
+	/**
+	 * Trae si el juego esta activo o no
+	 * @return
+	 */
+	public static boolean getActive(){
+		return Frame.ACTIVE;
+	}
+	
+	/**
+	 * Activa el juego
+	 * @param active
+	 */
+	public static void setActive(boolean active){
+		Frame.ACTIVE = active;
+	}
 }
