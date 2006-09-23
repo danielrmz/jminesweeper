@@ -90,7 +90,6 @@ public class Frame extends JFrame implements ActionListener {
 	public Frame() {
 		//-- Preferencias de la pantalla
 		this.setBackground(Color.white);
-		//this.setSize(670,600);
 		this.setTitle("Buscaminas");
 		this.setLayout(new BorderLayout());
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -201,7 +200,7 @@ public class Frame extends JFrame implements ActionListener {
 			this.setSize(600,330);
 			break;
 		}
-		//this.principal.removeAll();
+		this.getContentPane().removeAll();
 		this.getContentPane().add(this.grid,BorderLayout.CENTER);
 		SwingUtilities.updateComponentTreeUI(this);
 		Frame.ACTIVE = true;
