@@ -1,6 +1,8 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.border.Border;
+
 import com.sun.java.swing.plaf.windows.*;
 
 /**
@@ -70,6 +72,11 @@ public class GameFrame extends JFrame implements ActionListener {
 	private JMenuItem sobre = new JMenuItem("Sobre...");
 	
 	/**
+	 * Menu Item Mejores marcas
+	 */
+	private JMenuItem mejores = new JMenuItem("Mejores marcas");
+	
+	/**
 	 * Estatus del juego, activo o inactivo
 	 */
 	public static boolean ACTIVE = true;
@@ -77,12 +84,22 @@ public class GameFrame extends JFrame implements ActionListener {
 	/**
 	 * Panel del grid y de los contadores/carita
 	 */
-	public JPanel principal = new JPanel(new GridLayout(1,3));
+	public JPanel principal = new JPanel(new BorderLayout());
 	
 	/**
 	 * Face to restart
 	 */
 	public static JButton face = new JButton();
+	
+	/**
+	 * Mines Segment Led
+	 */
+	public SevenSegment minesleft;
+	
+	/**
+	 * Time Segment Led
+	 */
+	public SevenSegment time;
 	
 	/**
 	 * Constructor, Inicializa el frame de la aplicación
@@ -103,11 +120,20 @@ public class GameFrame extends JFrame implements ActionListener {
 		//-- Mnemonicos para el acceso rapido a los menus
 		archivo.setMnemonic('A');
 		ayuda.setMnemonic('y');
-		
+		nuevo.setMnemonic('N');
+		contenido.setMnemonic('C');
+		sobre.setMnemonic('S');
+		principiantes.setMnemonic('P');
+		intermedios.setMnemonic('I');
+		expertos.setMnemonic('E');
+		preferencias.setMnemonic('R');
+		salir.setMnemonic('S');
+		sonido.setMnemonic('O');
+		mejores.setMnemonic('M');
 		//-- Items del Menu
 		archivo.add(nuevo);
-		nuevo.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N,
-                java.awt.Event.CTRL_MASK));
+		nuevo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0));
+		contenido.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
 		archivo.addSeparator();
 		archivo.add(principiantes);
 		archivo.add(intermedios);
@@ -138,9 +164,6 @@ public class GameFrame extends JFrame implements ActionListener {
 		menubar.add(archivo);
 		menubar.add(ayuda);
 		
-		//-- Se crea el grid de botones de acuerdo al nivel
-		this.setLevel(1);
-		
 		//-- Se establecen los paneles
 		this.setJMenuBar(menubar);
 		
@@ -148,9 +171,22 @@ public class GameFrame extends JFrame implements ActionListener {
 		GameFrame.face.setIcon(Main.getIconImage("face_happy.jpg"));
 		GameFrame.face.setBorderPainted(false);
 		GameFrame.face.addActionListener(this);
+		GameFrame.face.setFocusable(false);
 		
-		principal.add(GameFrame.face);
-		this.getContentPane().add(principal,BorderLayout.NORTH);
+		this.getContentPane().add(principal,BorderLayout.CENTER);
+		JPanel segments = new JPanel(new BorderLayout());
+		segments.add(GameFrame.face,BorderLayout.CENTER);
+		this.setVisible(true);
+		Graphics g = this.getGraphics();
+		System.out.println(g);
+		minesleft = new SevenSegment(this,16,32);
+		this.setVisible(false);
+		segments.add(minesleft,BorderLayout.EAST);
+		segments.add(GameFrame.face,BorderLayout.CENTER);
+		principal.add(segments,BorderLayout.NORTH);
+		
+		//-- Se crea el grid de botones de acuerdo al nivel
+		this.setLevel(1);
 		
 		//-- Look n' Feel a la Windows Style
 	    try { 
@@ -211,12 +247,13 @@ public class GameFrame extends JFrame implements ActionListener {
 			this.setSize(510,330);
 			break;
 		}
-		//-- Se remueven los contenidos
-		this.getContentPane().removeAll();
 		
-		//-- Se agregan los componentes
-		this.getContentPane().add(principal,BorderLayout.NORTH);
-		this.getContentPane().add(this.grid,BorderLayout.CENTER);
+		//-- Se remueve el componente de grid viejo
+		if(principal.getComponents().length>1)
+			principal.remove(1); //[Grid]
+		
+		//-- Se agrega
+		principal.add(this.grid,BorderLayout.CENTER);
 		
 		//-- Se actualiza la interfaz
 		SwingUtilities.updateComponentTreeUI(this);
