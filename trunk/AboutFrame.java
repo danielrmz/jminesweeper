@@ -18,13 +18,35 @@ public class AboutFrame extends JFrame implements WindowListener {
 	 */
 	public AboutFrame() {
 		//-- Preferencias de la pantalla
-		this.setTitle("Buscaminas");
+		this.setTitle("Sobre el Buscaminas...");
 		this.setLayout(new BorderLayout());
 		this.setResizable(false);
-		this.setIconImage(Main.getImage("logo.gif"));
+		ImageIcon logo = Main.getIconImage("logo.png");
+		this.setIconImage(Main.getImage("logo.png"));
 		this.setSize(420,350);
 		this.addWindowListener(this);
 		this.setLocation(new Point(200,200));
+		
+		ImageIcon img = Main.getIconImage("banner.png");
+		JLabel top = new JLabel(img);
+		top.setSize(415,70);
+		this.add(top,BorderLayout.NORTH);
+		
+		JPanel centro = new JPanel(new BorderLayout());
+		ImageIcon java = Main.getIconImage("java.gif");
+		
+		JLabel l = new JLabel(logo);
+		l.setSize(new Dimension(32,60));
+		JLabel j = new JLabel(java);
+		JPanel left = new JPanel(new BorderLayout());
+		
+		j.setSize(new Dimension(34,63));
+		left.add(l,BorderLayout.NORTH);
+		left.add(j,BorderLayout.SOUTH);
+		
+		centro.add(left,BorderLayout.EAST);
+		
+		this.add(centro,BorderLayout.CENTER);
 	}
 	
 	/**
@@ -32,7 +54,6 @@ public class AboutFrame extends JFrame implements WindowListener {
 	 * @param WindowEvent
 	 */
 	public void windowClosing(WindowEvent arg0) {
-		System.out.println("Closing...");
 		Main.buscaminas.setEnabled(true);
 		this.dispose();
 	}

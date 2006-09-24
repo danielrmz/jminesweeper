@@ -140,7 +140,7 @@ public class Grid extends JPanel implements MouseListener {
 	}
 	
 	/**
-	 * Despliega la tabla en Consola
+	 * Despliega la tabla en Consola para ver los valores de las casillas
 	 */
 	private void despliegaTabla(){
 		String separadores = "";
@@ -239,13 +239,18 @@ public class Grid extends JPanel implements MouseListener {
 		}
 	}
 	
-	/**
+	public void mouseReleased(MouseEvent arg0) {
+		Boton aux = (Boton)arg0.getSource();
+		//-- Si el juego esta activo y no le pico a la bomba
+		if(aux.getValue() != Boton.DEAD && GameFrame.getActive()){
+			GameFrame.face.setIcon(Main.getIconImage("face_happy.jpg"));
+		}
+	}
+	
+	/*
 	 * Metodos sin usar del MouseListener
 	 */
 	public void mouseClicked(MouseEvent arg0) {}
-	public void mouseReleased(MouseEvent arg0) {
-		GameFrame.face.setIcon(Main.getIconImage("face_happy.jpg"));
-	}
 	public void mouseEntered(MouseEvent arg0) {}
 	public void mouseExited(MouseEvent arg0) {}
 	public void mouseDragged(MouseEvent arg0) {}
