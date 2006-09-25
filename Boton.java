@@ -110,9 +110,7 @@ public class Boton extends JButton {
 		case Boton.BOMB: 
 			if(this.status != Boton.FLAGED){
 				image = Main.getIconImage("bomb.jpg");
-			} else { 
-				image = Main.getIconImage("flagedbomb.jpg");
-			}
+			} 
 			break;
 		case Boton.DEAD: 
 			image = Main.getIconImage("selectedbomb.jpg");
@@ -166,6 +164,11 @@ public class Boton extends JButton {
 			}
 			this.setTypeImage();	
 			
+		} else if(status == Boton.CLICKED && this.value >=1 && aux == Boton.FLAGED ){
+		
+			ImageIcon img = Main.getIconImage("flagedbomb.jpg");
+			this.setIcon(img);
+		
 		} else if(status == Boton.FLAGED){
 			
 			ImageIcon img = Main.getIconImage("flag.jpg");

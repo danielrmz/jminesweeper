@@ -90,16 +90,6 @@ public class GameFrame extends JFrame implements ActionListener {
 	public static JButton face = new JButton();
 	
 	/**
-	 * Mines Segment Led
-	 */
-	public SevenSegment minesleft;
-	
-	/**
-	 * Time Segment Led
-	 */
-	public SevenSegment time;
-	
-	/**
 	 * Constructor, Inicializa el frame de la aplicación
 	 */
 	public GameFrame() {
@@ -174,17 +164,6 @@ public class GameFrame extends JFrame implements ActionListener {
 		this.getContentPane().add(principal,BorderLayout.CENTER);
 		JPanel segments = new JPanel(new BorderLayout());
 		segments.add(GameFrame.face,BorderLayout.CENTER);
-		this.setVisible(true);
-		Graphics g = this.getGraphics();
-		System.out.println(g);
-		minesleft = new SevenSegment(this,16,25);
-		minesleft.setBackground(Color.BLACK);
-		minesleft.setForeground(Color.RED);
-		minesleft.setValue(0);
-		minesleft.turnOn();
-		this.setVisible(false);
-		segments.add(minesleft,BorderLayout.EAST);
-		segments.add(GameFrame.face,BorderLayout.CENTER);
 		principal.add(segments,BorderLayout.NORTH);
 		
 		//-- Se crea el grid de botones de acuerdo al nivel
@@ -198,6 +177,7 @@ public class GameFrame extends JFrame implements ActionListener {
 	    	System.out.println("Error: Windows LookAndFeel no esta soportado");
 	    	this.dispose();
 	    }
+	    
 	}
 
 	/**
