@@ -68,6 +68,7 @@ public class Grid extends JPanel implements MouseListener {
 	 * @return bombas aleatorias
 	 */
 	private int[][] randomBombs(){
+		
 		int [][]data = new int[this.rows][this.cols];
 		int total = (int)(this.rows * this.cols * 0.3); //-- Total de bombas a generar
 		
@@ -84,7 +85,7 @@ public class Grid extends JPanel implements MouseListener {
 	}
 	
 	/**
-	 * Descubre las bombas 
+	 * Descubre las bombas al terminar el juego
 	 */
 	private void uncoverBombs(){
 		GameFrame.setActive(false);
@@ -96,7 +97,11 @@ public class Grid extends JPanel implements MouseListener {
 		for(int i=0;i<grid.length;i++){
 			for(int j=0;j<grid[i].length;j++){
 				int value = grid[i][j].getValue();
-				if(value == Boton.BOMB){
+				int status = grid[i][j].getStatus();
+				
+				if(value == Boton.BOMB && status != Boton.FLAGED ){
+					grid[i][j].setStatus(Boton.CLICKED);
+				} else if (status == Boton.FLAGED && value != Boton.BOMB){
 					grid[i][j].setStatus(Boton.CLICKED);
 				}
 			}
