@@ -95,9 +95,11 @@ public class PreferencesFrame extends JDialog implements WindowListener, ActionL
 			PreferencesFrame.rows = Integer.parseInt(txtAlto.getText());
 			PreferencesFrame.cols = Integer.parseInt(txtAncho.getText());
 			PreferencesFrame.mines = Integer.parseInt(txtMinas.getText());
-			if(rows>=9 && cols >=9 && mines >= 10){
+			if(rows>=9 && cols >=9 && mines >= 10 && rows<50 && cols<50 && mines<(rows*cols*0.8)){
 				Main.buscaminas.setLevel(4);
 				new Serial("preferencias.ini",this);
+			} else { 
+				System.out.println("Error: tamaño inválido, no puede exceder un grid de 50x50");
 			}
 		}
 		Main.buscaminas.setEnabled(true);
