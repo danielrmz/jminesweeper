@@ -87,7 +87,7 @@ public class Boton extends JButton {
 		//-- Configuraciones del boton
 		this.setIcon(Main.getIconImage("boton.png"));
 		this.setBorderPainted(false);
-		//this.setCursor("rifle.gif");
+		this.setCursor("rifle.gif");
 		this.setFocusable(false);
 	}
 	

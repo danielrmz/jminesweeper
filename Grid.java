@@ -305,6 +305,19 @@ public class Grid extends JPanel implements MouseListener {
 		return (GameFrame.banderas==0 && bflaged == this.nbombas)?true:false;
 	}
 	
+	public int countFlags(){
+		int bflaged = 0;
+		for(int i=0;i<this.grid.length;i++){
+			for(int j=0;j<this.grid[i].length;j++){
+				Boton aux = this.grid[i][j];
+				if(aux.getStatus() == Boton.FLAGED && aux.getValue() == Boton.BOMB){
+					bflaged++;
+				}
+			}	
+		}
+		return bflaged;
+	}
+	
 	public int getRows(){ return this.rows; }
 	public int getCols(){ return this.cols; }
 	public int getMines(){ 

@@ -1,5 +1,7 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+
 import javax.swing.*;
 import com.sun.java.swing.plaf.windows.*;
 
@@ -65,6 +67,16 @@ public class GameFrame extends JFrame implements ActionListener {
 	private JMenuItem mejores = new JMenuItem("Mejores marcas");
 	
 	/**
+	 * Menu Item Guardar
+	 */
+	private JMenuItem guardar = new JMenuItem("Guardar");
+	
+	/**
+	 * Menu Item Abrir
+	 */
+	private JMenuItem abrir = new JMenuItem("Abrir");
+	
+	/**
 	 * Menu Item Sonido
 	 */
 	public JCheckBoxMenuItem sonido = new JCheckBoxMenuItem("Sonido");
@@ -127,6 +139,7 @@ public class GameFrame extends JFrame implements ActionListener {
 		archivo.add(nuevo);
 		nuevo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0));
 		contenido.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
+	//	archivo.add(guardar);
 		archivo.addSeparator();
 		archivo.add(principiantes);
 		archivo.add(intermedios);
@@ -143,6 +156,7 @@ public class GameFrame extends JFrame implements ActionListener {
 		
 		//-- Listeners del menu
 		nuevo.addActionListener(this);
+		guardar.addActionListener(this);
 		principiantes.addActionListener(this);
 		intermedios.addActionListener(this);
 		expertos.addActionListener(this);
@@ -193,7 +207,9 @@ public class GameFrame extends JFrame implements ActionListener {
 	 * @param e Action Event
 	 */
 	public void actionPerformed(ActionEvent e) {
-		
+		if(e.getSource()!=salir && e.getSource() != preferencias){
+			(new File(Main.RUTA+"preferencias.ini")).delete();
+		}
 		if(e.getSource()==salir){
 			this.dispose();
 		} else if (e.getSource() == nuevo || e.getSource() == GameFrame.face){
@@ -216,8 +232,13 @@ public class GameFrame extends JFrame implements ActionListener {
 			a.setVisible(true);
 		} else if(e.getSource() == preferencias){
 			Main.buscaminas.setEnabled(false);
-			PreferencesFrame a = new PreferencesFrame();
+			PreferencesFrame a; 
+			Serial pref = new Serial("preferencias.ini");
+			a = (pref.getObject()!=null)?(PreferencesFrame)pref.getObject():new PreferencesFrame();
 			a.setVisible(true);
+		} else if(e.getSource() == guardar){
+			new Serial("Grid.obj",this.grid);
+			System.out.println("Juego Guardado");
 		}
 	}
 	
@@ -240,6 +261,7 @@ public class GameFrame extends JFrame implements ActionListener {
 			this.setSize(500,330);
 			break;
 		case 4: 
+			
 			int rows = PreferencesFrame.rows;
 			int cols = PreferencesFrame.cols;
 			int mines = PreferencesFrame.mines;
