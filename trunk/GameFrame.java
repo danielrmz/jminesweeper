@@ -1,8 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.border.Border;
-
 import com.sun.java.swing.plaf.windows.*;
 
 /**
@@ -52,11 +50,6 @@ public class GameFrame extends JFrame implements ActionListener {
 	private JMenuItem preferencias = new JMenuItem("Preferencias...");
 	
 	/**
-	 * Menu Item Sonido
-	 */
-	private JCheckBoxMenuItem sonido = new JCheckBoxMenuItem("Sonido");
-	
-	/**
 	 * Menu Item Salir
 	 */
 	private JMenuItem salir = new JMenuItem("Salir");
@@ -77,14 +70,19 @@ public class GameFrame extends JFrame implements ActionListener {
 	private JMenuItem mejores = new JMenuItem("Mejores marcas");
 	
 	/**
-	 * Estatus del juego, activo o inactivo
+	 * Menu Item Sonido
 	 */
-	public static boolean ACTIVE = true;
+	public JCheckBoxMenuItem sonido = new JCheckBoxMenuItem("Sonido");
 	
 	/**
 	 * Panel del grid y de los contadores/carita
 	 */
 	public JPanel principal = new JPanel(new BorderLayout());
+	
+	/**
+	 * Estatus del juego, activo o inactivo
+	 */
+	public static boolean ACTIVE = true;
 	
 	/**
 	 * Face to restart
@@ -179,7 +177,11 @@ public class GameFrame extends JFrame implements ActionListener {
 		this.setVisible(true);
 		Graphics g = this.getGraphics();
 		System.out.println(g);
-		minesleft = new SevenSegment(this,16,32);
+		minesleft = new SevenSegment(this,16,25);
+		minesleft.setBackground(Color.BLACK);
+		minesleft.setForeground(Color.RED);
+		minesleft.setValue(0);
+		minesleft.turnOn();
 		this.setVisible(false);
 		segments.add(minesleft,BorderLayout.EAST);
 		segments.add(GameFrame.face,BorderLayout.CENTER);

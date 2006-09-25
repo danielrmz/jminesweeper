@@ -45,6 +45,9 @@ public class AboutFrame extends JFrame implements WindowListener {
 		left.add(j,BorderLayout.SOUTH);
 		
 		centro.add(left,BorderLayout.EAST);
+		String text = "Reved JMinesweeper \n Version 0.2 Septiembre del 2006 \n Creado por los Revolutionary Software developers";
+		JLabel contenido = new JLabel(text);
+		centro.add(contenido,BorderLayout.CENTER);
 		
 		this.add(centro,BorderLayout.CENTER);
 	}
