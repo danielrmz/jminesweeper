@@ -21,7 +21,7 @@ public class Sound {
 	 * @param filename
 	 */
 	public Sound(String filename) {
-		String ruta = Main.ruta+filename;
+		String ruta = Main.RUTA+filename;
 		
 		try {
 			songPath = new URL("file:" + ruta); 
@@ -36,7 +36,7 @@ public class Sound {
 	 * @param filename 
 	 */
 	public Sound(String filename, boolean reproduce){
-		String ruta = Main.ruta+filename;
+		String ruta = Main.RUTA+filename;
 		try {
 			songPath = new URL("file:" + ruta); 
 			song = Applet.newAudioClip(songPath); 
