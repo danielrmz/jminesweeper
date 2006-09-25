@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 
@@ -34,6 +35,16 @@ public class Grid extends JPanel implements MouseListener {
 	private int nbombas = -1;
 	
 	/**
+	 * Tiempo usado para poner todas las bombas
+	 */
+	private int time = 0;
+	
+	/**
+	 * Timer 
+	 */
+	Timer tiempo = null;
+	
+	/**
 	 *  Constructor 
 	 *  @param rows Cantidad Renglones
 	 *  @param cols Cantidad Columnas
@@ -49,6 +60,12 @@ public class Grid extends JPanel implements MouseListener {
 		this.despliegaTabla();
 	}
 	
+	/**
+	 * Constructor para un numero de bombas definidas
+	 * @param cols columnas
+	 * @param rows renglones
+	 * @param nbombs cantidad de bombas
+	 */
 	public Grid(int cols, int rows,int nbombs) {
 		Border raisedbevel = BorderFactory.createLoweredBevelBorder();
 		
@@ -95,6 +112,11 @@ public class Grid extends JPanel implements MouseListener {
 		if(this.nbombas <= max && this.nbombas > min){
 			total = this.nbombas;
 		} else { this.nbombas = total; }
+		String extras = "";
+		if(total<10) extras = "00";
+		else if(total<100) extras = "0";
+		GameFrame.cbanderas.setText(extras+total);
+		System.out.println("Total de Minas: "+total);
 		
 		for(int i=0;i<data.length;i++){
 			for(int j=0;j<data[i].length;j++){
@@ -233,6 +255,11 @@ public class Grid extends JPanel implements MouseListener {
 				this.grid[i][j].setStatus(Boton.UNCLICKED);
 			}
 		}
+		if(tiempo!=null){
+			tiempo.stop();
+			time = 0;
+			GameFrame.ctiempo.setText("000");
+		}
 		this.despliegaTabla();
 	}
 	
@@ -247,6 +274,19 @@ public class Grid extends JPanel implements MouseListener {
 		Boton aux = (Boton)arg0.getSource();
 		//-- Si esta activo el juego entonces que haga de acuerdo al boton que le pico
 		if(GameFrame.getActive()){
+			if(tiempo==null || !tiempo.isRunning()){
+				if(tiempo==null){
+				tiempo = new Timer(1000, new ActionListener(){ public void actionPerformed(ActionEvent arg0) {
+				if(time!=999){
+					time += 1;
+					String extras = "";
+					if(time<10) extras = "00";
+					else if(time<100) extras = "0";
+					GameFrame.ctiempo.setText(extras+time+"");
+				}
+			}});}
+			tiempo.start();
+			}
 			//-- Boton Izquierdo y si no ha sido oprimido
 			if(arg0.getButton() == MouseEvent.BUTTON1 && aux.getStatus()==Boton.UNCLICKED){
 				aux.setStatus(Boton.CLICKED);
@@ -257,7 +297,7 @@ public class Grid extends JPanel implements MouseListener {
 					//-- Descubre las demas bombas
 					this.uncoverBombs();
 					//-- Cambia la carilla
-					GameFrame.face.setIcon(Main.getIconImage("face_lose.jpg"));
+					Main.buscaminas.face.setIcon(Main.getIconImage("face_lose.jpg"));
 				} else if(aux.getValue() == Boton.NUMBER){ 
 					//-- Descubre 0s si es casilla vacia
 					this.descubreCeros(aux.x,aux.y);
@@ -266,20 +306,24 @@ public class Grid extends JPanel implements MouseListener {
 			//-- Si es boton derecho poner bandera
 			} else if (arg0.getButton() == MouseEvent.BUTTON3 && (aux.getStatus() == Boton.UNCLICKED || aux.getStatus() == Boton.FLAGED )){ 
 				int action = (aux.getStatus() == Boton.UNCLICKED)?Boton.FLAGED:Boton.UNCLICKED;
-				//TODO: Restar o aumentar las banderas aqui de acuerdo a lo q le haya picado
 				if(action == Boton.UNCLICKED) GameFrame.banderas++; else GameFrame.banderas--;
+				String extras = "";
+				if(GameFrame.banderas>=0 && GameFrame.banderas<10) extras = "00";
+				else if(GameFrame.banderas>=0&&GameFrame.banderas<100) extras = "0";
+				GameFrame.cbanderas.setText(extras+GameFrame.banderas);
 				aux.setStatus(action);
-				
+				System.out.println(GameFrame.banderas);
 				if(this.allBombsFlaged()){
 					GameFrame.setActive(false);
-					System.out.println("Ganaste. Juego Terminado");
-					GameFrame.face.setIcon(Main.getIconImage("cool.png"));
+					tiempo.stop();
+					System.out.println("Ganaste. Juego Terminado. Tiempo: "+this.time+" segundos.");
+					Main.buscaminas.face.setIcon(Main.getIconImage("cool.png"));
 				}
 				
 				
 			} else if(aux.getStatus() == Boton.FLAGED){ 
 				//-- Si tiene bandera y le pico poner carilla sorprendida
-				GameFrame.face.setIcon(Main.getIconImage("face_surprised.jpg"));
+				Main.buscaminas.face.setIcon(Main.getIconImage("face_surprised.jpg"));
 			}
 		}
 	}
@@ -288,7 +332,7 @@ public class Grid extends JPanel implements MouseListener {
 		Boton aux = (Boton)arg0.getSource();
 		//-- Si el juego esta activo y no le pico a la bomba
 		if(aux.getValue() != Boton.DEAD && GameFrame.getActive()){
-			GameFrame.face.setIcon(Main.getIconImage("face_happy.jpg"));
+			Main.buscaminas.face.setIcon(Main.getIconImage("face_happy.jpg"));
 		}
 	}
 	
@@ -318,11 +362,22 @@ public class Grid extends JPanel implements MouseListener {
 		return bflaged;
 	}
 	
-	public int getRows(){ return this.rows; }
-	public int getCols(){ return this.cols; }
+	public int getRows(){ 
+		return this.rows; 
+	}
+	
+	public int getCols(){ 
+		return this.cols; 
+	}
+	
 	public int getMines(){ 
 		return this.nbombas; 
 	}
+	
+	public int getTime(){
+		return this.time;
+	}
+	
 	/*
 	 * Metodos sin usar del MouseListener
 	 */
@@ -331,5 +386,6 @@ public class Grid extends JPanel implements MouseListener {
 	public void mouseExited(MouseEvent arg0) {}
 	public void mouseDragged(MouseEvent arg0) {}
 	public void mouseMoved(MouseEvent arg0) {}
-	//TODO: Ver si se pueden quitar estos con el MouseInputListener de JAVAX
+
+	
 }
