@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.border.Border;
 
 /**
  * Clase que crea la cuadricula de botones
@@ -30,17 +31,32 @@ public class Grid extends JPanel implements MouseListener {
 	/**
 	 * Total de Bombas
 	 */
-	private int nbombas = 0;
-	//TODO: en el frame de configuracion especificar la cantidad de bombas y anexar esto al randomBombs
+	private int nbombas = -1;
+	
 	/**
 	 *  Constructor 
 	 *  @param rows Cantidad Renglones
 	 *  @param cols Cantidad Columnas
 	 */
-	public Grid(int rows,int cols) {
+	public Grid(int cols,int rows) {
+		Border raisedbevel = BorderFactory.createLoweredBevelBorder();
+		
 		this.rows = rows;
 		this.cols = cols;
-		this.setLayout(new GridLayout(rows,cols));
+		this.setLayout(new GridLayout(rows,cols,0,0));
+		this.setBorder(raisedbevel);
+		this.makeGrid();
+		this.despliegaTabla();
+	}
+	
+	public Grid(int cols, int rows,int nbombs) {
+		Border raisedbevel = BorderFactory.createLoweredBevelBorder();
+		
+		this.rows = rows;
+		this.cols = cols;
+		this.nbombas = nbombs;
+		this.setLayout(new GridLayout(rows,cols,0,0));
+		this.setBorder(raisedbevel);
 		this.makeGrid();
 		this.despliegaTabla();
 	}
@@ -56,7 +72,7 @@ public class Grid extends JPanel implements MouseListener {
 			for(int j=0;j<data[i].length;j++){
 				this.grid[i][j] = new Boton(Boton.UNCLICKED,data[i][j], i, j);
 				this.grid[i][j].addMouseListener(this);
-				 this.add(this.grid[i][j]);
+				this.add(this.grid[i][j]);
 			}
 		}
 	}
@@ -70,12 +86,20 @@ public class Grid extends JPanel implements MouseListener {
 	private int[][] randomBombs(){
 		
 		int [][]data = new int[this.rows][this.cols];
-		int total = (int)(this.rows * this.cols * 0.3); //-- Total de bombas a generar
+		
+		int min = (int)(this.rows * this.cols * 0.2); //-- Total de bombas a generar
+		int max = (int)(this.rows * this.cols * 0.8); //-- Maximo de bombas posibles
+		int total = min;
+		
+		//-- Si no excede el numero de bombas permitidas
+		if(this.nbombas <= max && this.nbombas > min){
+			total = this.nbombas;
+		} else { this.nbombas = total; }
 		
 		for(int i=0;i<data.length;i++){
 			for(int j=0;j<data[i].length;j++){
 				boolean bomb = (Math.random()>0.8)?true:false;
-				if(bomb){
+				if(bomb && total > 0){
 					data[i][j] = -1;
 					total--;
 				}
@@ -209,14 +233,17 @@ public class Grid extends JPanel implements MouseListener {
 				this.grid[i][j].setStatus(Boton.UNCLICKED);
 			}
 		}
-		
 		this.despliegaTabla();
 	}
+	
+	public void setBombs(int bombs){
+		this.nbombas = bombs;
+	}
+	
 	/**
 	 * Metodo del MouseInputListener que cambia el estatus del boton
 	 */
 	public void mousePressed(MouseEvent arg0) {
-		
 		Boton aux = (Boton)arg0.getSource();
 		//-- Si esta activo el juego entonces que haga de acuerdo al boton que le pico
 		if(GameFrame.getActive()){
@@ -240,7 +267,16 @@ public class Grid extends JPanel implements MouseListener {
 			} else if (arg0.getButton() == MouseEvent.BUTTON3 && (aux.getStatus() == Boton.UNCLICKED || aux.getStatus() == Boton.FLAGED )){ 
 				int action = (aux.getStatus() == Boton.UNCLICKED)?Boton.FLAGED:Boton.UNCLICKED;
 				//TODO: Restar o aumentar las banderas aqui de acuerdo a lo q le haya picado
+				if(action == Boton.UNCLICKED) GameFrame.banderas++; else GameFrame.banderas--;
 				aux.setStatus(action);
+				
+				if(this.allBombsFlaged()){
+					GameFrame.setActive(false);
+					System.out.println("Ganaste. Juego Terminado");
+					GameFrame.face.setIcon(Main.getIconImage("cool.png"));
+				}
+				
+				
 			} else if(aux.getStatus() == Boton.FLAGED){ 
 				//-- Si tiene bandera y le pico poner carilla sorprendida
 				GameFrame.face.setIcon(Main.getIconImage("face_surprised.jpg"));
@@ -256,6 +292,24 @@ public class Grid extends JPanel implements MouseListener {
 		}
 	}
 	
+	public boolean allBombsFlaged(){
+		int bflaged = 0;
+		for(int i=0;i<this.grid.length;i++){
+			for(int j=0;j<this.grid[i].length;j++){
+				Boton aux = this.grid[i][j];
+				if(aux.getStatus() == Boton.FLAGED && aux.getValue() == Boton.BOMB){
+					bflaged++;
+				}
+			}	
+		}
+		return (GameFrame.banderas==0 && bflaged == this.nbombas)?true:false;
+	}
+	
+	public int getRows(){ return this.rows; }
+	public int getCols(){ return this.cols; }
+	public int getMines(){ 
+		return this.nbombas; 
+	}
 	/*
 	 * Metodos sin usar del MouseListener
 	 */

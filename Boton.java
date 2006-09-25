@@ -83,12 +83,11 @@ public class Boton extends JButton {
 		//-- Parametros del arreglo contenedor de botones
 		this.x = x;
 		this.y = y;
-		
+	
 		//-- Configuraciones del boton
-		this.setIcon(Main.getIconImage("boton.jpg"));
+		this.setIcon(Main.getIconImage("boton.png"));
 		this.setBorderPainted(false);
-		this.setCursor("rifle.gif");
-		this.setMaximumSize(new Dimension(16,16));
+		//this.setCursor("rifle.gif");
 		this.setFocusable(false);
 	}
 	
@@ -109,18 +108,18 @@ public class Boton extends JButton {
 		switch(this.value){
 		case Boton.BOMB: 
 			if(this.status != Boton.FLAGED){
-				image = Main.getIconImage("bomb.jpg");
+				image = Main.getIconImage("bomb.png");
 			} 
 			break;
 		case Boton.DEAD: 
-			image = Main.getIconImage("selectedbomb.jpg");
+			image = Main.getIconImage("selectedbomb.png");
 			break;
 		
 		case Boton.NUMBER:
-			image = Main.getIconImage("blank.jpg");
+			image = Main.getIconImage("blank.png");
 			break;
 		default: 
-			image = Main.getIconImage("boton.jpg");
+			image = Main.getIconImage("boton.png");
 			break;
 		}
 		this.setIcon(image);
@@ -166,20 +165,20 @@ public class Boton extends JButton {
 			
 		} else if(status == Boton.CLICKED && this.value >=1 && aux == Boton.FLAGED ){
 		
-			ImageIcon img = Main.getIconImage("flagedbomb.jpg");
+			ImageIcon img = Main.getIconImage("flagedbomb.png");
 			this.setIcon(img);
 		
 		} else if(status == Boton.FLAGED){
 			
-			ImageIcon img = Main.getIconImage("flag.jpg");
+			ImageIcon img = Main.getIconImage("flag.png");
 			this.setIcon(img);
 			
 		} else if(status==Boton.UNCLICKED) {
 			
-			this.setIcon(Main.getIconImage("boton.jpg"));
+			this.setIcon(Main.getIconImage("boton.png"));
 			
 		} else if(this.value>0) {
-			ImageIcon img = Main.getIconImage(this.value+".jpg");
+			ImageIcon img = Main.getIconImage(this.value+".png");
 			this.setIcon(img);
 		} 
 	}
