@@ -66,7 +66,8 @@ public class Serial {
 					base = in.readObject();
 					in.close();
 				} catch (FileNotFoundException ex){
-					System.out.println("Archivo no encontrado");
+					if(Serial.debug)
+						System.out.println("Archivo no encontrado");
 				} catch (IOException ex) {
 					ex.printStackTrace();
 				} catch (ClassNotFoundException ex){

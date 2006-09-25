@@ -3,6 +3,8 @@ import java.awt.event.*;
 import java.io.File;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+
 import com.sun.java.swing.plaf.windows.*;
 
 /**
@@ -84,7 +86,7 @@ public class GameFrame extends JFrame implements ActionListener {
 	/**
 	 * Panel del grid y de los contadores/carita
 	 */
-	public JPanel principal = new JPanel(new BorderLayout());
+	public JPanel principal;
 	
 	/**
 	 * Estatus del juego, activo o inactivo
@@ -94,7 +96,7 @@ public class GameFrame extends JFrame implements ActionListener {
 	/**
 	 * Face to restart
 	 */
-	public static JButton face = new JButton();
+	public JButton face = new JButton();
 
 	/**
 	 * Grid de Botones / Datos
@@ -107,16 +109,35 @@ public class GameFrame extends JFrame implements ActionListener {
 	public static int banderas = 0;
 	
 	/**
+	 * Display del reloj
+	 */
+	public static JLabel ctiempo = new JLabel("000");
+	
+	/**
+	 * Display de banderas 
+	 */
+	public static JLabel cbanderas = new JLabel("000");
+	
+	/**
 	 * Constructor, Inicializa el frame de la aplicación
 	 */
 	public GameFrame() {
+		BorderLayout b = new BorderLayout();
+		b.setHgap(2);
+		b.setVgap(2);
+		BorderLayout bb = new BorderLayout();
+		bb.setHgap(3);
+		bb.setVgap(3);
+		
 		//-- Preferencias de la pantalla
 		this.setTitle("Buscaminas");
-		this.getContentPane().setLayout(new BorderLayout());
+		this.getContentPane().setLayout(b);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setResizable(false);
 		this.setIconImage(Main.getImage("logo.png"));
 		this.setLocation(new Point(20,20));
+		
+		principal = new JPanel(bb);
 		
 		//-- Menus
 		JMenu archivo = new JMenu("Archivo");
@@ -139,6 +160,7 @@ public class GameFrame extends JFrame implements ActionListener {
 		archivo.add(nuevo);
 		nuevo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0));
 		contenido.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
+		
 		archivo.add(guardar);
 		archivo.add(abrir);
 		archivo.addSeparator();
@@ -176,17 +198,22 @@ public class GameFrame extends JFrame implements ActionListener {
 		this.setJMenuBar(menubar);
 		
 		//-- Estadisticas
-		GameFrame.face.setIcon(Main.getIconImage("face_happy.jpg"));
-		GameFrame.face.setBorderPainted(false);
-		GameFrame.face.addActionListener(this);
-		GameFrame.face.setFocusable(false);
+		face.setIcon(Main.getIconImage("face_happy.jpg"));
+		face.setBorder(BorderFactory.createEmptyBorder());
+		face.setBorderPainted(false);
+		face.addActionListener(this);
+		face.setFocusable(false);
 		
 		this.getContentPane().add(new JLabel(" "),BorderLayout.WEST);
 		this.getContentPane().add(new JLabel(" "),BorderLayout.EAST);
 		
 		this.getContentPane().add(principal,BorderLayout.CENTER);
 		JPanel segments = new JPanel(new BorderLayout());
-		segments.add(GameFrame.face,BorderLayout.CENTER);
+		Border lbevel = BorderFactory.createLoweredBevelBorder();
+		segments.setBorder(lbevel);
+		segments.add(cbanderas,BorderLayout.WEST);
+		segments.add(ctiempo,BorderLayout.EAST);
+		segments.add(face,BorderLayout.CENTER);
 		principal.add(segments,BorderLayout.NORTH);
 		
 		//-- Se crea el grid de botones de acuerdo al nivel
@@ -213,7 +240,7 @@ public class GameFrame extends JFrame implements ActionListener {
 		}
 		if(e.getSource()==salir){
 			this.dispose();
-		} else if (e.getSource() == nuevo || e.getSource() == GameFrame.face){
+		} else if (e.getSource() == nuevo || e.getSource() == face){
 			this.gameRestart(true);
 		} else if(e.getSource() == principiantes){
 			this.setLevel(1);
@@ -251,7 +278,7 @@ public class GameFrame extends JFrame implements ActionListener {
 		switch(nivel){
 		case 1: //-- Principiante 
 			this.grid = new Grid(9,9); //cols,rows
-			this.setSize(160,238);
+			this.setSize(165,238);
 			break;
 		case 2: //-- Intermedio
 			this.grid = new Grid(16,16);
@@ -290,13 +317,14 @@ public class GameFrame extends JFrame implements ActionListener {
 	 * Se encarga de poner el juego activo, asi como reiniciar los contadores
 	 */
 	private void gameRestart(boolean gridreset){
-		GameFrame.face.setIcon(Main.getIconImage("face_happy.jpg"));
+		face.setIcon(Main.getIconImage("face_happy.jpg"));
 		GameFrame.setActive(true);
 		GameFrame.banderas = this.grid.getMines();
 		if(gridreset){
 			this.grid.reset();
 		}
 		//TODO: Agregar inicializacion de contadores aqui
+		
 	}
 	
 	/**
