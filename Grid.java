@@ -89,6 +89,10 @@ public class Grid extends JPanel implements MouseListener {
 	private void uncoverBombs(){
 		GameFrame.setActive(false);
 		
+		if(Main.buscaminas.sonido.getState()){
+			new Sound("bomb.wav",true); //-- Reproducir en el constructor
+		}
+	
 		for(int i=0;i<grid.length;i++){
 			for(int j=0;j<grid[i].length;j++){
 				int value = grid[i][j].getValue();
