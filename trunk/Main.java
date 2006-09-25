@@ -7,7 +7,7 @@ import javax.swing.ImageIcon;
  * Inicializa la aplicacion del buscaminas, 
  * para versiones mas recientes visite <a href="http://code.google.com/p/jminesweeper/" target="_blank">http://code.google.com/p/jminesweeper/</a>
  * @author Revolution Software Developers
- * @version 0.5 Revision 18
+ * @version 0.5 Revision 22
  */
 public class Main {
 	
@@ -19,7 +19,7 @@ public class Main {
 	/**
 	 * Version
 	 */
-	public static final String VERSION = "0.5 Revisión 18";
+	public static final String VERSION = "0.5 Revisión 22";
 	/**
 	 * GameFrame
 	 */
