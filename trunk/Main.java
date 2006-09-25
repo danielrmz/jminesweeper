@@ -1,7 +1,6 @@
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.File;
-
 import javax.swing.ImageIcon;
 
 /**
@@ -30,8 +29,20 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		PreferencesFrame prefs = (PreferencesFrame)new Serial("preferencias.ini").getObject();
 		buscaminas = new GameFrame();
+		if(prefs!=null){
+			//-- Cargar preferencias si existen
+			int rows = Integer.parseInt(prefs.txtAlto.getText());
+			int cols = Integer.parseInt(prefs.txtAlto.getText());
+			int mines = Integer.parseInt(prefs.txtMinas.getText());
+			PreferencesFrame.rows = rows;
+			PreferencesFrame.cols = cols;
+			PreferencesFrame.mines = mines;
+			buscaminas.setLevel(4);
+		} 
 		buscaminas.setVisible(true);
+		
 	}
 
 	/**

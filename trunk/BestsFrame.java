@@ -1,6 +1,6 @@
 import javax.swing.*;
 
-public class BestsFrame extends JFrame {
+public class BestsFrame extends JDialog {
 
 	/**
 	 * Constante de Eclipse

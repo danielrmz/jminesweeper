@@ -1,6 +1,5 @@
 import java.awt.*;
 import java.awt.event.*;
-
 import javax.swing.*;
 
 /**
@@ -27,17 +26,17 @@ public class PreferencesFrame extends JDialog implements WindowListener, ActionL
 	/**
 	 * Alto del grid
 	 */
-	private JTextField txtAlto = new JTextField(Main.buscaminas.grid.getRows()+"",4);
+	public JTextField txtAlto = new JTextField(Main.buscaminas.grid.getRows()+"",4);
 	
 	/**
 	 * Ancho del Grid
 	 */
-	private JTextField txtAncho = new JTextField(Main.buscaminas.grid.getCols()+"",4);
+	public JTextField txtAncho = new JTextField(Main.buscaminas.grid.getCols()+"",4);
 	
 	/**
 	 * Cantidad de Minas
 	 */
-	private JTextField txtMinas = new JTextField(Main.buscaminas.grid.getMines()+"",4);
+	public JTextField txtMinas = new JTextField(Main.buscaminas.grid.getMines()+"",4);
 	
 	public static int rows = 0;
 	public static int cols = 0;
@@ -98,6 +97,7 @@ public class PreferencesFrame extends JDialog implements WindowListener, ActionL
 			PreferencesFrame.mines = Integer.parseInt(txtMinas.getText());
 			if(rows>=9 && cols >=9 && mines >= 10){
 				Main.buscaminas.setLevel(4);
+				new Serial("preferencias.ini",this);
 			}
 		}
 		Main.buscaminas.setEnabled(true);
