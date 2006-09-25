@@ -8,6 +8,7 @@ import java.io.*;
  * @author Revolution Software Developers
  */
 public class Serial {
+	public static boolean debug = false;
 	private Object base = null;
 	
 	/**
@@ -36,7 +37,8 @@ public class Serial {
 			if(!filename.equals("")){
 				FileOutputStream fos = null;
 				ObjectOutputStream out = null;
-				System.out.println("Serializando objeto... ("+filename+")");
+				if(Serial.debug)
+					System.out.println("Serializando objeto... ("+filename+")");
 				try {
 					fos = new FileOutputStream(filename);
 					out = new ObjectOutputStream(fos);
@@ -45,8 +47,8 @@ public class Serial {
 				} catch (IOException ex){
 					ex.printStackTrace();
 				}
-				System.out.println("Serializacion Completa");
-		
+				if(Serial.debug)
+					System.out.println("Serializacion Completa");
 			}
 		}
 	}
@@ -56,7 +58,8 @@ public class Serial {
 			if(!filename.equals("")){
 				FileInputStream fis = null;
 				ObjectInputStream in = null;
-				System.out.println("Deserializando... ("+filename+")");
+				if(Serial.debug)
+					System.out.println("Deserializando... ("+filename+")");
 				try {
 					fis = new FileInputStream(filename);
 					in = new ObjectInputStream(fis);
@@ -69,7 +72,8 @@ public class Serial {
 				} catch (ClassNotFoundException ex){
 					ex.printStackTrace();
 				} 
-				System.out.println("Deserializacion Completa");
+				if(Serial.debug)
+					System.out.println("Deserializacion Completa");
 			}
 		}
 	}

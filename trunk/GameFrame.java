@@ -139,7 +139,8 @@ public class GameFrame extends JFrame implements ActionListener {
 		archivo.add(nuevo);
 		nuevo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0));
 		contenido.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
-	//	archivo.add(guardar);
+		archivo.add(guardar);
+		archivo.add(abrir);
 		archivo.addSeparator();
 		archivo.add(principiantes);
 		archivo.add(intermedios);
@@ -237,8 +238,8 @@ public class GameFrame extends JFrame implements ActionListener {
 			a = (pref.getObject()!=null)?(PreferencesFrame)pref.getObject():new PreferencesFrame();
 			a.setVisible(true);
 		} else if(e.getSource() == guardar){
-			new Serial("Grid.obj",this.grid);
-			System.out.println("Juego Guardado");
+			//new Serial("Grid.obj",this.grid);
+			//System.out.println("Juego Guardado");
 		}
 	}
 	
