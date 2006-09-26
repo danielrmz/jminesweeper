@@ -9,6 +9,7 @@ import javax.swing.border.Border;
  * @author Revolution Software Developers
  */
 public class Grid extends JPanel implements MouseListener {
+	
 	/**
 	 * Constante de eclipse
 	 */
@@ -40,9 +41,14 @@ public class Grid extends JPanel implements MouseListener {
 	private int time = 0;
 	
 	/**
+	 * Safe Click
+	 */
+	private boolean safeClicked = false;
+	
+	/**
 	 * Timer 
 	 */
-	Timer tiempo = null;
+	public Timer tiempo = null;
 	
 	/**
 	 *  Constructor 
@@ -111,9 +117,9 @@ public class Grid extends JPanel implements MouseListener {
 		int min = (int)(this.rows * this.cols * 0.2); //-- Total de bombas a generar
 		int max = (int)(this.rows * this.cols * 0.8); //-- Maximo de bombas posibles
 		int total = min;
-	
+		
 		//-- Si no excede el numero de bombas permitidas
-		if(this.nbombas <= max && this.nbombas > min){
+		if(this.nbombas <= max && this.nbombas > -1){
 			total = this.nbombas;
 		} else { this.nbombas = total; }
 		String extras = "";
@@ -268,6 +274,7 @@ public class Grid extends JPanel implements MouseListener {
 		if(Main.debug){
 			this.despliegaTabla();
 		}
+		this.safeClicked = false;
 	}
 	
 	public void setBombs(int bombs){
@@ -281,6 +288,7 @@ public class Grid extends JPanel implements MouseListener {
 		Boton aux = (Boton)arg0.getSource();
 		//-- Si esta activo el juego entonces que haga de acuerdo al boton que le pico
 		if(GameFrame.getActive()){
+			//-- Inicializacion del tiempo
 			if(tiempo==null || !tiempo.isRunning()){
 				if(tiempo==null){
 				tiempo = new Timer(1000, new ActionListener(){ public void actionPerformed(ActionEvent arg0) {
@@ -302,15 +310,21 @@ public class Grid extends JPanel implements MouseListener {
 				aux.setStatus(Boton.CLICKED);
 				//-- Si es una bomba cambiale el estatus a DEAD[para que tenga otro bg] y presionala
 				if(aux.getValue() == Boton.BOMB){
-					aux.setValue(Boton.DEAD);
-					aux.setStatus(Boton.CLICKED);
-					if(tiempo!=null) {
-						tiempo.stop();
+					if(!this.safeClicked){
+						this.moveBomb(aux);
+						aux.setStatus(Boton.CLICKED);
+						this.safeClicked = true;
+					} else {
+						aux.setValue(Boton.DEAD);
+						aux.setStatus(Boton.CLICKED);
+						if(tiempo!=null) {
+							tiempo.stop();
+						}
+						//-- Descubre las demas bombas
+						this.uncoverBombs();
+						//-- Cambia la carilla
+						Main.buscaminas.face.setIcon(Main.getIconImage("face_lose.jpg"));
 					}
-					//-- Descubre las demas bombas
-					this.uncoverBombs();
-					//-- Cambia la carilla
-					Main.buscaminas.face.setIcon(Main.getIconImage("face_lose.jpg"));
 				} else if(aux.getValue() == Boton.NUMBER){ 
 					//-- Descubre 0s si es casilla vacia
 					this.descubreCeros(aux.x,aux.y);
@@ -325,7 +339,7 @@ public class Grid extends JPanel implements MouseListener {
 				else if(GameFrame.banderas>=0&&GameFrame.banderas<100) extras = "0";
 				GameFrame.cbanderas.setText(extras+GameFrame.banderas);
 				aux.setStatus(action);
-				System.out.println(GameFrame.banderas);
+				
 				if(this.allBombsFlaged()){
 					GameFrame.setActive(false);
 					if(tiempo!=null){
@@ -421,6 +435,39 @@ public class Grid extends JPanel implements MouseListener {
 	 */
 	public int getTime(){
 		return this.time;
+	}
+	
+	/**
+	 * Mueve la bomba a otro lugar
+	 */
+	private void moveBomb(Boton b){
+		int[][] data = new int[this.rows][this.cols];
+		
+		for(int i=0; i<this.grid.length; i++){
+			for(int j=0; j<this.grid[i].length; j++){
+				if(this.grid[i][j].getValue() != Boton.BOMB && this.grid[i][j].getStatus()!=Boton.CLICKED ){
+					this.grid[i][j].setValue(Boton.BOMB);
+					b.setValue(Boton.NUMBER);
+					break;
+				}
+			}
+		}
+		
+		for(int i=0; i<this.grid.length; i++){
+			for(int j=0; j<this.grid[i].length; j++){
+				int value = this.grid[i][j].getValue();
+				value = (value>=0)?0:value;
+				data[i][j] = value;
+			}
+		}
+		
+		data = this.enumeraTabla(data);
+		
+		for(int i=0; i<this.grid.length; i++){
+			for(int j=0; j<this.grid[i].length; j++){
+				this.grid[i][j].setValue(data[i][j]);
+			}
+		}
 	}
 	
 	/*

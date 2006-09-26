@@ -19,7 +19,7 @@ public class Main {
 	/**
 	 * Version
 	 */
-	public static final String VERSION = "0.5 Revisión 29";
+	public static final String VERSION = "0.5 Revisión 30";
 	/**
 	 * GameFrame
 	 */
@@ -28,7 +28,7 @@ public class Main {
 	/**
 	 * Debug mode
 	 */
-	public static boolean debug = false;
+	public static boolean debug = true;
 	
 	/**
 	 * @param args

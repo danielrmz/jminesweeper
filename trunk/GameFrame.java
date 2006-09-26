@@ -310,6 +310,7 @@ public class GameFrame extends JFrame implements ActionListener {
 			int rows = PreferencesFrame.rows;
 			int cols = PreferencesFrame.cols;
 			int mines = PreferencesFrame.mines;
+		
 			this.grid = new Grid(cols,rows,mines);
 			this.setSize(16*cols+40,16*rows+80);
 			break;
