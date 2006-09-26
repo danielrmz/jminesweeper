@@ -299,6 +299,9 @@ public class Grid extends JPanel implements MouseListener {
 				if(aux.getValue() == Boton.BOMB){
 					aux.setValue(Boton.DEAD);
 					aux.setStatus(Boton.CLICKED);
+					if(tiempo!=null) {
+						tiempo.stop();
+					}
 					//-- Descubre las demas bombas
 					this.uncoverBombs();
 					//-- Cambia la carilla
@@ -320,7 +323,9 @@ public class Grid extends JPanel implements MouseListener {
 				System.out.println(GameFrame.banderas);
 				if(this.allBombsFlaged()){
 					GameFrame.setActive(false);
-					tiempo.stop();
+					if(tiempo!=null){
+						tiempo.stop();
+					}
 					System.out.println("Ganaste. Juego Terminado. Tiempo: "+this.time+" segundos.");
 					Main.buscaminas.face.setIcon(Main.getIconImage("cool.png"));
 				}
