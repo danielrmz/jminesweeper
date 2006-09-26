@@ -78,6 +78,14 @@ public class AboutFrame extends JDialog implements WindowListener, ActionListene
 		this.dispose();
 	}
 	
+	/**
+	 * Para cerrar la pantalla
+	 */
+	public void actionPerformed(ActionEvent arg0) {
+		Main.buscaminas.setEnabled(true);
+		this.dispose();
+	}
+	
 	public void windowOpened(WindowEvent arg0) {}
 	public void windowClosed(WindowEvent arg0) {}
 	public void windowIconified(WindowEvent arg0) {}
@@ -85,9 +93,5 @@ public class AboutFrame extends JDialog implements WindowListener, ActionListene
 	public void windowActivated(WindowEvent arg0) {}
 	public void windowDeactivated(WindowEvent arg0) {}
 
-	public void actionPerformed(ActionEvent arg0) {
-		Main.buscaminas.setEnabled(true);
-		this.dispose();
-	}
 
 }
