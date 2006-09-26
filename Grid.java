@@ -333,6 +333,9 @@ public class Grid extends JPanel implements MouseListener {
 		}
 	}
 	
+	/**
+	 * Para cambiar la carilla si esta en surprised
+	 */
 	public void mouseReleased(MouseEvent arg0) {
 		Boton aux = (Boton)arg0.getSource();
 		//-- Si el juego esta activo y no le pico a la bomba
@@ -341,6 +344,10 @@ public class Grid extends JPanel implements MouseListener {
 		}
 	}
 	
+	/**
+	 * Metodo que verifica que si todas las bombas estan banderadas
+	 * @return boolean
+	 */
 	public boolean allBombsFlaged(){
 		int bflaged = 0;
 		for(int i=0;i<this.grid.length;i++){
@@ -354,6 +361,10 @@ public class Grid extends JPanel implements MouseListener {
 		return (GameFrame.banderas==0 && bflaged == this.nbombas)?true:false;
 	}
 	
+	/**
+	 * Cuenta las flags puestas en las bombas
+	 * @return
+	 */
 	public int countFlags(){
 		int bflaged = 0;
 		for(int i=0;i<this.grid.length;i++){
@@ -367,18 +378,34 @@ public class Grid extends JPanel implements MouseListener {
 		return bflaged;
 	}
 	
+	/**
+	 * Trae el numero de renglones
+	 * @return
+	 */
 	public int getRows(){ 
 		return this.rows; 
 	}
 	
+	/**
+	 * Trae el numero de columnas
+	 * @return
+	 */
 	public int getCols(){ 
 		return this.cols; 
 	}
 	
+	/**
+	 * Trae el numero de minas
+	 * @return
+	 */
 	public int getMines(){ 
 		return this.nbombas; 
 	}
 	
+	/**
+	 * Trae el tiempo total que duro la persona
+	 * @return
+	 */
 	public int getTime(){
 		return this.time;
 	}

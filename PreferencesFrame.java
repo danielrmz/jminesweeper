@@ -90,6 +90,9 @@ public class PreferencesFrame extends JDialog implements WindowListener, ActionL
 		this.dispose();
 	}
 	
+	/**
+	 * Metodo para cerrar la ventana y guardar la configuracion
+	 */
 	public void actionPerformed(ActionEvent arg0) {
 		if(arg0.getSource() == cmdOk){
 			PreferencesFrame.rows = Integer.parseInt(txtAlto.getText());

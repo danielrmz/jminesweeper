@@ -27,12 +27,24 @@ public class Serial {
 		new Unserialize(filename);
 	}
 	
-	
+	/**
+	 * Regresa el objeto deserializado
+	 * @return Object
+	 */
 	public Object getObject(){
 		return this.base;
 	}
 	
+	/**
+	 * Clase que serializa un objeto mandado
+	 * @author Revolution Software Developers
+	 */
 	private class Serialize {
+		/**
+		 * Constructor
+		 * @param filename nombre destino del archivo que contendra al objeto
+		 * @param base Objeto base a serializar
+		 */
 		public Serialize(String filename, Object base) {
 			if(!filename.equals("")){
 				FileOutputStream fos = null;
@@ -53,7 +65,16 @@ public class Serial {
 		}
 	}
 	
+	/**
+	 * Clase que deserializa el objeto guardado en una liga definida
+	 * @author Revolution Software developers
+	 *
+	 */
 	private class Unserialize {
+		/**
+		 * Contructor
+		 * @param filename
+		 */
 		public Unserialize(String filename){
 			if(!filename.equals("")){
 				FileInputStream fis = null;
