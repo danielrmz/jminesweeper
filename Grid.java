@@ -57,7 +57,9 @@ public class Grid extends JPanel implements MouseListener {
 		this.setLayout(new GridLayout(rows,cols,0,0));
 		this.setBorder(raisedbevel);
 		this.makeGrid();
-		this.despliegaTabla();
+		if(Main.debug){
+			this.despliegaTabla();
+		}
 	}
 	
 	/**
@@ -75,7 +77,9 @@ public class Grid extends JPanel implements MouseListener {
 		this.setLayout(new GridLayout(rows,cols,0,0));
 		this.setBorder(raisedbevel);
 		this.makeGrid();
-		this.despliegaTabla();
+		if(Main.debug){
+			this.despliegaTabla();
+		}
 	}
 	
 	/**
@@ -116,7 +120,6 @@ public class Grid extends JPanel implements MouseListener {
 		if(total<10) extras = "00";
 		else if(total<100) extras = "0";
 		GameFrame.cbanderas.setText(extras+total);
-		System.out.println("Total de Minas: "+total);
 		
 		for(int i=0;i<data.length;i++){
 			for(int j=0;j<data[i].length;j++){
@@ -260,7 +263,9 @@ public class Grid extends JPanel implements MouseListener {
 			time = 0;
 			GameFrame.ctiempo.setText("000");
 		}
-		this.despliegaTabla();
+		if(Main.debug){
+			this.despliegaTabla();
+		}
 	}
 	
 	public void setBombs(int bombs){
