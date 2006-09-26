@@ -211,10 +211,23 @@ public class GameFrame extends JFrame implements ActionListener {
 		JPanel segments = new JPanel(new BorderLayout());
 		Border lbevel = BorderFactory.createLoweredBevelBorder();
 		segments.setBorder(lbevel);
-		segments.add(cbanderas,BorderLayout.WEST);
-		segments.add(ctiempo,BorderLayout.EAST);
+		JPanel ab = new JPanel();
+		ab.add(cbanderas);
+		ab.setBackground(Color.BLACK);
+		JPanel ac = new JPanel();
+		ac.add(ctiempo);
+		ac.setBackground(Color.BLACK);
+		
+		segments.add(ab,BorderLayout.WEST);
+		segments.add(ac,BorderLayout.EAST);
+		ctiempo.setFont(new Font("MS Dialog", Font.BOLD, 20));
+		cbanderas.setFont(new Font("MS Dialog", Font.BOLD, 20));
+		ctiempo.setForeground(Color.RED);
+		cbanderas.setForeground(Color.RED);
+		
 		segments.add(face,BorderLayout.CENTER);
 		principal.add(segments,BorderLayout.NORTH);
+		
 		
 		//-- Se crea el grid de botones de acuerdo al nivel
 		this.setLevel(1);

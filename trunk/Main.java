@@ -7,7 +7,7 @@ import javax.swing.ImageIcon;
  * Inicializa la aplicacion del buscaminas, 
  * para versiones mas recientes visite <a href="http://code.google.com/p/jminesweeper/" target="_blank">http://code.google.com/p/jminesweeper/</a>
  * @author Revolution Software Developers
- * @version 0.5 Revision 22
+ * @version 0.5 Revision 24
  */
 public class Main {
 	
@@ -19,16 +19,22 @@ public class Main {
 	/**
 	 * Version
 	 */
-	public static final String VERSION = "0.5 Revisión 22";
+	public static final String VERSION = "0.5 Revisión 24";
 	/**
 	 * GameFrame
 	 */
 	public static GameFrame buscaminas;
 	
 	/**
+	 * Debug mode
+	 */
+	public static boolean debug = false;
+	
+	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		
 		PreferencesFrame prefs = (PreferencesFrame)new Serial("preferencias.ini").getObject();
 		buscaminas = new GameFrame();
 		if(prefs!=null){
