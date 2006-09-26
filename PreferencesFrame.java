@@ -102,7 +102,7 @@ public class PreferencesFrame extends JDialog implements WindowListener, ActionL
 				Main.buscaminas.setLevel(4);
 				new Serial("preferencias.ini",this);
 			} else { 
-				System.out.println("Error: tamaño inválido, no puede exceder un grid de 50x50");
+				System.out.println("Error: tamaño inválido, no puede exceder un grid de 50x50 o debe ser mas de una mina");
 			}
 		}
 		Main.buscaminas.setEnabled(true);
