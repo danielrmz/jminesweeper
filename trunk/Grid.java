@@ -442,7 +442,7 @@ public class Grid extends JPanel implements MouseListener {
 	 */
 	private void moveBomb(Boton b){
 		int[][] data = new int[this.rows][this.cols];
-		
+		//se busca otro lugar para la bomba
 		for(int i=0; i<this.grid.length; i++){
 			for(int j=0; j<this.grid[i].length; j++){
 				if(this.grid[i][j].getValue() != Boton.BOMB && this.grid[i][j].getStatus()!=Boton.CLICKED ){
@@ -452,7 +452,7 @@ public class Grid extends JPanel implements MouseListener {
 				}
 			}
 		}
-		
+		//-- se guardan los datos enu n arreglo
 		for(int i=0; i<this.grid.length; i++){
 			for(int j=0; j<this.grid[i].length; j++){
 				int value = this.grid[i][j].getValue();
@@ -460,9 +460,9 @@ public class Grid extends JPanel implements MouseListener {
 				data[i][j] = value;
 			}
 		}
-		
+		//-- Se vuelve a ponderar la tabla
 		data = this.enumeraTabla(data);
-		
+		//-- Se vacian los datos a los botones
 		for(int i=0; i<this.grid.length; i++){
 			for(int j=0; j<this.grid[i].length; j++){
 				this.grid[i][j].setValue(data[i][j]);
