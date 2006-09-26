@@ -111,7 +111,7 @@ public class Grid extends JPanel implements MouseListener {
 		int min = (int)(this.rows * this.cols * 0.2); //-- Total de bombas a generar
 		int max = (int)(this.rows * this.cols * 0.8); //-- Maximo de bombas posibles
 		int total = min;
-		
+	
 		//-- Si no excede el numero de bombas permitidas
 		if(this.nbombas <= max && this.nbombas > min){
 			total = this.nbombas;
@@ -258,11 +258,13 @@ public class Grid extends JPanel implements MouseListener {
 				this.grid[i][j].setStatus(Boton.UNCLICKED);
 			}
 		}
+		
 		if(tiempo!=null){
 			tiempo.stop();
 			time = 0;
 			GameFrame.ctiempo.setText("000");
 		}
+		
 		if(Main.debug){
 			this.despliegaTabla();
 		}
@@ -288,6 +290,9 @@ public class Grid extends JPanel implements MouseListener {
 					if(time<10) extras = "00";
 					else if(time<100) extras = "0";
 					GameFrame.ctiempo.setText(extras+time+"");
+					if(Main.buscaminas.sonido.getState()){
+						new Sound("timer.wav",true); //-- Reproducir en el constructor
+					}
 				}
 			}});}
 			tiempo.start();
@@ -325,6 +330,9 @@ public class Grid extends JPanel implements MouseListener {
 					GameFrame.setActive(false);
 					if(tiempo!=null){
 						tiempo.stop();
+					}
+					if(Main.buscaminas.sonido.getState()){
+						new Sound("win.wav",true); //-- Reproducir en el constructor
 					}
 					System.out.println("Ganaste. Juego Terminado. Tiempo: "+this.time+" segundos.");
 					Main.buscaminas.face.setIcon(Main.getIconImage("cool.png"));

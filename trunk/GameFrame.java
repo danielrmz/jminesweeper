@@ -288,6 +288,10 @@ public class GameFrame extends JFrame implements ActionListener {
 	 * se crea un nuevo grid, y se añade al canvas, se modifica también el tamaño del juego
 	 */
 	public void setLevel(int nivel){
+		if(this.grid !=null && this.grid.tiempo != null) {
+			this.grid.tiempo.stop();
+			GameFrame.ctiempo.setText("000");
+		}
 		switch(nivel){
 		case 1: //-- Principiante 
 			this.grid = new Grid(9,9); //cols,rows
