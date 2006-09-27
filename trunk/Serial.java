@@ -49,7 +49,7 @@ public class Serial {
 			if(!filename.equals("")){
 				FileOutputStream fos = null;
 				ObjectOutputStream out = null;
-				if(Serial.debug)
+				if(Serial.debug || Main.debug)
 					System.out.println("Serializando objeto... ("+filename+")");
 				try {
 					fos = new FileOutputStream(filename);
@@ -59,7 +59,7 @@ public class Serial {
 				} catch (IOException ex){
 					ex.printStackTrace();
 				}
-				if(Serial.debug)
+				if(Serial.debug || Main.debug)
 					System.out.println("Serializacion Completa");
 			}
 		}
@@ -79,7 +79,7 @@ public class Serial {
 			if(!filename.equals("")){
 				FileInputStream fis = null;
 				ObjectInputStream in = null;
-				if(Serial.debug)
+				if(Serial.debug || Main.debug)
 					System.out.println("Deserializando... ("+filename+")");
 				try {
 					fis = new FileInputStream(filename);
@@ -94,7 +94,7 @@ public class Serial {
 				} catch (ClassNotFoundException ex){
 					ex.printStackTrace();
 				} 
-				if(Serial.debug)
+				if(Serial.debug || Main.debug)
 					System.out.println("Deserializacion Completa");
 			}
 		}
