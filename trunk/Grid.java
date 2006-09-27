@@ -46,6 +46,10 @@ public class Grid extends JPanel implements MouseListener {
 	private boolean safeClicked = false;
 	
 	/**
+	 * Indica si ya le pico a alguna casilla
+	 */
+	private boolean clicked = false;
+	/**
 	 * Timer 
 	 */
 	public Timer tiempo = null;
@@ -274,7 +278,9 @@ public class Grid extends JPanel implements MouseListener {
 		if(Main.debug){
 			this.despliegaTabla();
 		}
+		
 		this.safeClicked = false;
+		this.clicked = false;
 	}
 	
 	public void setBombs(int bombs){
@@ -310,10 +316,11 @@ public class Grid extends JPanel implements MouseListener {
 				aux.setStatus(Boton.CLICKED);
 				//-- Si es una bomba cambiale el estatus a DEAD[para que tenga otro bg] y presionala
 				if(aux.getValue() == Boton.BOMB){
-					if(!this.safeClicked){
+					if(!this.safeClicked && !this.clicked){
 						this.moveBomb(aux);
 						aux.setStatus(Boton.CLICKED);
 						this.safeClicked = true;
+						
 					} else {
 						aux.setValue(Boton.DEAD);
 						aux.setStatus(Boton.CLICKED);
@@ -328,8 +335,9 @@ public class Grid extends JPanel implements MouseListener {
 				} else if(aux.getValue() == Boton.NUMBER){ 
 					//-- Descubre 0s si es casilla vacia
 					this.descubreCeros(aux.x,aux.y);
-				}
-			
+					
+				} else {  }
+				this.clicked = true;
 			//-- Si es boton derecho poner bandera
 			} else if (arg0.getButton() == MouseEvent.BUTTON3 && (aux.getStatus() == Boton.UNCLICKED || aux.getStatus() == Boton.FLAGED )){ 
 				int action = (aux.getStatus() == Boton.UNCLICKED)?Boton.FLAGED:Boton.UNCLICKED;
@@ -442,15 +450,17 @@ public class Grid extends JPanel implements MouseListener {
 	 */
 	private void moveBomb(Boton b){
 		int[][] data = new int[this.rows][this.cols];
+		boolean ok = false;
 		//se busca otro lugar para la bomba
-		for(int i=0; i<this.grid.length; i++){
-			for(int j=0; j<this.grid[i].length; j++){
-				if(this.grid[i][j].getValue() != Boton.BOMB && this.grid[i][j].getStatus()!=Boton.CLICKED ){
+		for(int i=0; i<this.grid.length && !ok; i++){
+			for(int j=0; j<this.grid[i].length && !ok; j++){
+				if(this.grid[i][j].getValue() != Boton.BOMB){
 					this.grid[i][j].setValue(Boton.BOMB);
 					b.setValue(Boton.NUMBER);
-					break;
+					ok = true;
 				}
 			}
+			
 		}
 		//-- se guardan los datos enu n arreglo
 		for(int i=0; i<this.grid.length; i++){
