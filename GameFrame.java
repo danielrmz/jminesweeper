@@ -244,6 +244,28 @@ public class GameFrame extends JFrame implements ActionListener {
 	}
 
 	/**
+	 * Se encarga de poner el juego activo, asi como reiniciar los contadores
+	 */
+	private void gameRestart(boolean gridreset){
+		face.setIcon(Main.getIconImage("face_happy.jpg"));
+		GameFrame.setActive(true);
+		GameFrame.banderas = this.grid.getMines();
+		if(gridreset){
+			this.grid.reset();
+		}
+	}
+	
+	/**
+	 * Guarda el juego actual
+	 */
+	private void save(String route){
+		//TODO: Serializar Grid
+	}
+	
+	private void open(String route){
+		//TODO: Desearlizar Grid, e importar caracteristicas
+	}
+	/**
 	 * Action Performed al hacer click en algun item del menu
 	 * @param e Action Event
 	 */
@@ -278,6 +300,11 @@ public class GameFrame extends JFrame implements ActionListener {
 			a = (pref.getObject()!=null)?(PreferencesFrame)pref.getObject():new PreferencesFrame();
 			a.setVisible(true);
 		} else if(e.getSource() == guardar){
+			JFileChooser fc = new JFileChooser();
+			fc.showSaveDialog(this);
+			File sf = fc.getSelectedFile();
+			String ruta = sf.toString();
+			this.save(ruta);
 			//new Serial("Grid.obj",this.grid);
 			//System.out.println("Juego Guardado");
 		}
@@ -303,7 +330,7 @@ public class GameFrame extends JFrame implements ActionListener {
 			break;
 		case 3: //-- Avanzado
 			this.grid = new Grid(30,16);
-			this.setSize(500,330);
+			this.setSize(500,370);
 			break;
 		case 4: 
 			
@@ -329,20 +356,6 @@ public class GameFrame extends JFrame implements ActionListener {
 		
 		//-- El juego se activa [por si habia perdido]
 		this.gameRestart(false);
-	}
-	
-	/**
-	 * Se encarga de poner el juego activo, asi como reiniciar los contadores
-	 */
-	private void gameRestart(boolean gridreset){
-		face.setIcon(Main.getIconImage("face_happy.jpg"));
-		GameFrame.setActive(true);
-		GameFrame.banderas = this.grid.getMines();
-		if(gridreset){
-			this.grid.reset();
-		}
-		//TODO: Agregar inicializacion de contadores aqui
-		
 	}
 	
 	/**

@@ -131,15 +131,22 @@ public class Grid extends JPanel implements MouseListener {
 		else if(total<100) extras = "0";
 		GameFrame.cbanderas.setText(extras+total);
 		
-		for(int i=0;i<data.length;i++){
-			for(int j=0;j<data[i].length;j++){
+		for(int i=0;i<data.length && total>0; i++){
+			for(int j=0;j<data[i].length && total>0; j++){
 				boolean bomb = (Math.random()>0.8)?true:false;
 				if(bomb && total > 0){
 					data[i][j] = -1;
 					total--;
 				}
+				//-- si faltaron bombas
+				if(i==data.length-1 && j == data[i].length-1 && total>0){
+					i=0;
+					j=0;
+				}
+					
 			}
 		}
+		System.out.println(total);
 		return data;
 	}
 	
