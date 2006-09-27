@@ -121,7 +121,7 @@ public class Grid extends JPanel implements MouseListener {
 		int min = (int)(this.rows * this.cols * 0.2); //-- Total de bombas a generar
 		int max = (int)(this.rows * this.cols * 0.8); //-- Maximo de bombas posibles
 		int total = min;
-		total = 2;
+		
 		//-- Si no excede el numero de bombas permitidas
 		if(this.nbombas <= max && this.nbombas > -1){
 			total = this.nbombas;
@@ -389,6 +389,10 @@ public class Grid extends JPanel implements MouseListener {
 						this.moveBomb(aux);
 						aux.setStatus(Boton.CLICKED);
 						this.safeClicked = true;
+						//-- Descubre las bombas si el valor nuevo de la casilla es nulo
+						if(aux.getValue() == Boton.NUMBER){
+							this.descubreCeros(aux.x,aux.y);
+						}
 						
 					} else {
 						aux.setValue(Boton.DEAD);

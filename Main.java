@@ -19,7 +19,7 @@ public class Main {
 	/**
 	 * Version
 	 */
-	public static final String VERSION = "0.5 Revisión 34";
+	public static final String VERSION = "0.5 Revisión 35";
 	/**
 	 * GameFrame
 	 */
