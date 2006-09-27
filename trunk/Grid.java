@@ -296,22 +296,7 @@ public class Grid extends JPanel implements MouseListener {
 		}
 	}
 	
-	/**
-	 * Metodo que cuenta si la cuadricula ya ha sido clickeada exceptuando las bombas
-	 */
-	private boolean countPressedButtons(){
-		for(int i=0;i<this.grid.length; i++){
-			for(int j=0;j<this.grid[i].length;j++){
-				Boton x = this.grid[i][j];
-				if(x.getValue()>=0 && x.getStatus() == Boton.CLICKED){
-				
-				} else if(x.getValue()>=0){
-					return false;
-				}
-			}
-		}
-		return true;
-	}
+
 	
 	/**
 	 * Establece las variables y cosas de entorno al ya ganar
@@ -415,15 +400,9 @@ public class Grid extends JPanel implements MouseListener {
 				} else if(aux.getValue() == Boton.NUMBER){ 
 					//-- Descubre 0s si es casilla vacia
 					this.descubreCeros(aux.x,aux.y);
-					boolean all = this.countPressedButtons();
-					if(all){
-						this.win();
-					}
+					
 				} else if(aux.getValue() > Boton.NUMBER){  
-					boolean all = this.countPressedButtons();
-					if(all){
-						this.win();
-					}
+					
 				}
 				this.clicked = true;
 			//-- Si es boton derecho poner bandera
