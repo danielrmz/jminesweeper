@@ -121,7 +121,7 @@ public class Grid extends JPanel implements MouseListener {
 		int min = (int)(this.rows * this.cols * 0.2); //-- Total de bombas a generar
 		int max = (int)(this.rows * this.cols * 0.8); //-- Maximo de bombas posibles
 		int total = min;
-		
+		total = 2;
 		//-- Si no excede el numero de bombas permitidas
 		if(this.nbombas <= max && this.nbombas > -1){
 			total = this.nbombas;
@@ -255,6 +255,75 @@ public class Grid extends JPanel implements MouseListener {
 	}
 	
 	/**
+	 * Mueve la bomba a otro lugar
+	 */
+	private void moveBomb(Boton b){
+		int[][] data = new int[this.rows][this.cols];
+		boolean ok = false;
+		//se busca otro lugar para la bomba
+		for(int i=0; i<this.grid.length && !ok; i++){
+			for(int j=0; j<this.grid[i].length && !ok; j++){
+				if(this.grid[i][j].getValue() != Boton.BOMB){
+					this.grid[i][j].setValue(Boton.BOMB);
+					b.setValue(Boton.NUMBER);
+					ok = true;
+				}
+			}
+			
+		}
+		//-- se guardan los datos enu n arreglo
+		for(int i=0; i<this.grid.length; i++){
+			for(int j=0; j<this.grid[i].length; j++){
+				int value = this.grid[i][j].getValue();
+				value = (value>=0)?0:value;
+				data[i][j] = value;
+			}
+		}
+		//-- Se vuelve a ponderar la tabla
+		data = this.enumeraTabla(data);
+		//-- Se vacian los datos a los botones
+		for(int i=0; i<this.grid.length; i++){
+			for(int j=0; j<this.grid[i].length; j++){
+				this.grid[i][j].setValue(data[i][j]);
+			}
+		}
+	}
+	
+	/**
+	 * Metodo que cuenta si la cuadricula ya ha sido clickeada exceptuando las bombas
+	 */
+	private boolean countPressedButtons(){
+		for(int i=0;i<this.grid.length; i++){
+			for(int j=0;j<this.grid[i].length;j++){
+				Boton x = this.grid[i][j];
+				if(x.getValue()>=0 && x.getStatus() == Boton.CLICKED){
+				
+				} else if(x.getValue()>=0){
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	
+	/**
+	 * Establece las variables y cosas de entorno al ya ganar
+	 */
+	private void win(){
+		GameFrame.setActive(false);
+		if(tiempo!=null){
+			tiempo.stop();
+		}
+		if(Main.buscaminas.sonido.getState()){
+			new Sound("win.wav",true); //-- Reproducir en el constructor
+		}
+		if(Main.debug){
+			System.out.println("Ganaste. Juego Terminado. Tiempo: "+this.time+" segundos.");
+		}
+		Main.buscaminas.face.setIcon(Main.getIconImage("cool.png"));	
+	}
+	
+	/**
 	 * Resetea el grid de datos
 	 */
 	public void reset(){
@@ -335,8 +404,16 @@ public class Grid extends JPanel implements MouseListener {
 				} else if(aux.getValue() == Boton.NUMBER){ 
 					//-- Descubre 0s si es casilla vacia
 					this.descubreCeros(aux.x,aux.y);
-					
-				} else {  }
+					boolean all = this.countPressedButtons();
+					if(all){
+						this.win();
+					}
+				} else if(aux.getValue() > Boton.NUMBER){  
+					boolean all = this.countPressedButtons();
+					if(all){
+						this.win();
+					}
+				}
 				this.clicked = true;
 			//-- Si es boton derecho poner bandera
 			} else if (arg0.getButton() == MouseEvent.BUTTON3 && (aux.getStatus() == Boton.UNCLICKED || aux.getStatus() == Boton.FLAGED )){ 
@@ -349,15 +426,7 @@ public class Grid extends JPanel implements MouseListener {
 				aux.setStatus(action);
 				
 				if(this.allBombsFlaged()){
-					GameFrame.setActive(false);
-					if(tiempo!=null){
-						tiempo.stop();
-					}
-					if(Main.buscaminas.sonido.getState()){
-						new Sound("win.wav",true); //-- Reproducir en el constructor
-					}
-					System.out.println("Ganaste. Juego Terminado. Tiempo: "+this.time+" segundos.");
-					Main.buscaminas.face.setIcon(Main.getIconImage("cool.png"));
+					this.win();
 				}
 				
 				
@@ -443,41 +512,6 @@ public class Grid extends JPanel implements MouseListener {
 	 */
 	public int getTime(){
 		return this.time;
-	}
-	
-	/**
-	 * Mueve la bomba a otro lugar
-	 */
-	private void moveBomb(Boton b){
-		int[][] data = new int[this.rows][this.cols];
-		boolean ok = false;
-		//se busca otro lugar para la bomba
-		for(int i=0; i<this.grid.length && !ok; i++){
-			for(int j=0; j<this.grid[i].length && !ok; j++){
-				if(this.grid[i][j].getValue() != Boton.BOMB){
-					this.grid[i][j].setValue(Boton.BOMB);
-					b.setValue(Boton.NUMBER);
-					ok = true;
-				}
-			}
-			
-		}
-		//-- se guardan los datos enu n arreglo
-		for(int i=0; i<this.grid.length; i++){
-			for(int j=0; j<this.grid[i].length; j++){
-				int value = this.grid[i][j].getValue();
-				value = (value>=0)?0:value;
-				data[i][j] = value;
-			}
-		}
-		//-- Se vuelve a ponderar la tabla
-		data = this.enumeraTabla(data);
-		//-- Se vacian los datos a los botones
-		for(int i=0; i<this.grid.length; i++){
-			for(int j=0; j<this.grid[i].length; j++){
-				this.grid[i][j].setValue(data[i][j]);
-			}
-		}
 	}
 	
 	/*
