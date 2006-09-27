@@ -28,7 +28,7 @@ public class Main {
 	/**
 	 * Debug mode
 	 */
-	public static boolean debug = true;
+	public static boolean debug = false;
 	
 	/**
 	 * @param args
