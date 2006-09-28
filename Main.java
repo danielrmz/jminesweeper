@@ -20,8 +20,9 @@ public class Main {
 	 * Version
 	 */
 	public static final String VERSION = "1.0 Revisión 41";
+	
 	/**
-	 * GameFrame
+	 * GameFrame, ventana del juego principal
 	 */
 	public static GameFrame buscaminas;
 	

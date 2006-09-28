@@ -38,11 +38,23 @@ public class PreferencesFrame extends JDialog implements WindowListener, ActionL
 	 */
 	public JTextField txtMinas = new JTextField(Main.buscaminas.grid.getMines()+"",4);
 	
-	public static int rows = 0;
-	public static int cols = 0;
-	public static int mines = 0;
 	/**
-	 * Constructor
+	 * Renglones definidos por el usuario
+	 */
+	public static int rows = 0;
+	
+	/**
+	 * Columnas definidas por el usuario
+	 */
+	public static int cols = 0;
+	
+	/**
+	 * Minas definidas por el usuario
+	 */
+	public static int mines = 0;
+	
+	/**
+	 * Constructor de la ventana de preferencias
 	 */
 	public PreferencesFrame() {
 		//-- Preferencias de la pantalla
@@ -82,8 +94,7 @@ public class PreferencesFrame extends JDialog implements WindowListener, ActionL
 	}
 	
 	/**
-	 * On Close
-	 * @param WindowEvent
+	 * On Close, habilita la otra ventana y cierra esta
 	 */
 	public void windowClosing(WindowEvent arg0) {
 		Main.buscaminas.setEnabled(true);

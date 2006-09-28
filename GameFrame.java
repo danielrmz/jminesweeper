@@ -406,7 +406,7 @@ public class GameFrame extends JFrame implements ActionListener {
 	
 	/**
 	 * Trae si el juego esta activo o no
-	 * @return
+	 * @return GameFrame.ACTIVE
 	 */
 	public static boolean getActive(){
 		return GameFrame.ACTIVE;
@@ -423,17 +423,16 @@ public class GameFrame extends JFrame implements ActionListener {
 	/**
 	 * Clase filtro para los cuadros de dialogo abrir y guardar
 	 * @author Revolution Software Developers
-	 *
 	 */
-	private class JMSPFilter extends FileFilter {
-
+	public static class JMSPFilter extends FileFilter {
+		
 		public boolean accept(File arg0) {
 			String filename = arg0.getName();
 	        return (filename.endsWith(".jmsp")||arg0.isDirectory());
 		}
 
 		public String getDescription() {
-			return "JMinsweeper Game File (*.jmsp)";
+			return "JMinesweeper Game File (*.jmsp)";
 		}
 		
 	}
@@ -445,11 +444,39 @@ public class GameFrame extends JFrame implements ActionListener {
 	 */
 	public static class DataContainer implements Serializable {
 		private static final long serialVersionUID = 1L;
-		int[][][] data = null;
-		int time = 0;
-		int rows = 0;
-		int cols = 0;
-		int mines = 0;
+		/**
+		 * datos guardados
+		 */
+		public int[][][] data = null;
+		
+		/**
+		 * Tiempo usado
+		 */
+		public int time = 0;
+		
+		/**
+		 * Renglones del grid
+		 */
+		public int rows = 0;
+		
+		/**
+		 * Columnas del grid
+		 */
+		public int cols = 0;
+		
+		/**
+		 * Minas en el grid
+		 */
+		public int mines = 0;
+		
+		/**
+		 * Constructor
+		 * @param time tiempo
+		 * @param rows renglones
+		 * @param cols columnas
+		 * @param mines minas
+		 * @param data datos [reng][cols][2]{status,value}
+		 */
 		public DataContainer(int time, int rows, int cols, int mines, int[][][] data){
 			this.time = time;
 			this.rows = rows;

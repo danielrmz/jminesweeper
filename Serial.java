@@ -8,7 +8,14 @@ import java.io.*;
  * @author Revolution Software Developers
  */
 public class Serial {
+	/**
+	 * Define si mostrara mensajes de debug
+	 */
 	public static boolean debug = false;
+	
+	/**
+	 * Objeto deserializado 
+	 */
 	private Object base = null;
 	
 	/**
@@ -44,6 +51,7 @@ public class Serial {
 		 * Constructor
 		 * @param filename nombre destino del archivo que contendra al objeto
 		 * @param base Objeto base a serializar
+		 * @throws Exception
 		 */
 		public Serialize(String filename, Object base) {
 			if(!filename.equals("")){
@@ -69,12 +77,14 @@ public class Serial {
 	/**
 	 * Clase que deserializa el objeto guardado en una liga definida
 	 * @author Revolution Software developers
-	 *
 	 */
 	private class Unserialize {
 		/**
 		 * Contructor
 		 * @param filename
+		 * @throws FileNotFoundException
+		 * @throws IOException
+		 * @throws ClassNotFoundException
 		 */
 		public Unserialize(String filename){
 			if(!filename.equals("")){
