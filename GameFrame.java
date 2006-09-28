@@ -271,9 +271,30 @@ public class GameFrame extends JFrame implements ActionListener {
 	
 	private void open(File file){
 		DataContainer grid = (DataContainer)new Serial(file.getAbsolutePath()).getObject();
-		//TODO: Sacar e importar caracteristicas del DataContainer
+		if(grid==null) return;
+		this.grid.reset(); //Se cancela el juego actual [el timer y eso]
+		//-- Se crea el nuevo grid de acuerdo a la configuracion guardada
+		this.grid = new Grid(grid.cols,grid.rows,grid.mines);
+		this.grid.setData(grid.data);
 		
-		System.out.println(grid);
+		if(this.grid.allBombsFlaged()){
+			GameFrame.setActive(false);
+			this.face.setIcon(Main.getIconImage("cool.png"));	
+		} else if(this.grid.hasOpenBomb()){
+			GameFrame.setActive(false);
+			this.face.setIcon(Main.getIconImage("face_lose.jpg"));	
+		}
+		int mines = this.grid.getMines()-this.grid.countFlags();
+		
+		GameFrame.ctiempo.setText((grid.time<10?"00":grid.time<100?"0":"")+grid.time+"");
+		GameFrame.cbanderas.setText((mines<10?"00":mines<100?"0":"")+mines+"");
+		GameFrame.banderas = mines;
+		
+		if(principal.getComponents().length>1)
+			principal.remove(1); //[Grid]
+		principal.add(this.grid,BorderLayout.CENTER);
+		SwingUtilities.updateComponentTreeUI(this);
+		
 	}
 	
 	/**
@@ -358,7 +379,7 @@ public class GameFrame extends JFrame implements ActionListener {
 			int mines = PreferencesFrame.mines;
 		
 			this.grid = new Grid(cols,rows,mines);
-			this.setSize(16*cols+40,16*rows+80);
+			this.setSize(16*cols+27,16*rows+95);
 			break;
 		}
 		
@@ -406,7 +427,8 @@ public class GameFrame extends JFrame implements ActionListener {
 		
 	}
 	
-	private class DataContainer implements Serializable {
+	public static class DataContainer implements Serializable {
+		private static final long serialVersionUID = 1L;
 		int[][][] data = null;
 		int time = 0;
 		int rows = 0;

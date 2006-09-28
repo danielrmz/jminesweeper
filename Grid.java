@@ -120,7 +120,7 @@ public class Grid extends JPanel implements MouseListener {
 		int min = (int)(this.rows * this.cols * 0.15); //-- Total de bombas a generar
 		int max = (int)(this.rows * this.cols * 0.8); //-- Maximo de bombas posibles
 		int total = min;
-		total = 1;
+		
 		//-- Si no excede el numero de bombas permitidas
 		if(this.nbombas <= max && this.nbombas > -1){
 			total = this.nbombas;
@@ -478,7 +478,7 @@ public class Grid extends JPanel implements MouseListener {
 	 * Cuenta las flags puestas en las bombas
 	 * @return
 	 */
-	public int countFlags(){
+	public int countBombedFlags(){
 		int bflaged = 0;
 		for(int i=0;i<this.grid.length;i++){
 			for(int j=0;j<this.grid[i].length;j++){
@@ -489,6 +489,37 @@ public class Grid extends JPanel implements MouseListener {
 			}	
 		}
 		return bflaged;
+	}
+	
+	/**
+	 * Cuenta las flags puestas
+	 */
+	public int countFlags(){
+		int bflaged = 0;
+		for(int i=0;i<this.grid.length;i++){
+			for(int j=0;j<this.grid[i].length;j++){
+				Boton aux = this.grid[i][j];
+				if(aux.getStatus() == Boton.FLAGED ){
+					bflaged++;
+				}
+			}	
+		}
+		return bflaged;
+	}
+	
+	/**
+	 * Trae si alguna bomba ya fue abierta
+	 */
+	public boolean hasOpenBomb(){
+		for(int i=0;i<this.grid.length;i++){
+			for(int j=0;j<this.grid[i].length;j++){
+				Boton aux = this.grid[i][j];
+				if(aux.getStatus() == Boton.CLICKED && aux.getValue() == Boton.BOMB){
+					return true;
+				}
+			}	
+		}
+		return false;
 	}
 	
 	/**
@@ -537,6 +568,22 @@ public class Grid extends JPanel implements MouseListener {
 		}
 		return data;
 	}
+	
+	/**
+	 * Establece los datos a partir de un arreglo
+	 */
+	public void setData(int[][][] data){
+		for(int i=0;i<this.rows;i++){
+			for(int j=0; j<this.cols; j++){
+				this.grid[i][j].setValue(data[i][j][1]);	 //-- Value
+				this.grid[i][j].setStatus(data[i][j][0]); //-- Status
+			}
+		}
+	}
+	
+	/**
+	 * Trae las bombas abiertas
+	 */
 	
 	/*
 	 * Metodos sin usar del MouseListener
