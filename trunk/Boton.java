@@ -68,10 +68,10 @@ public class Boton extends JButton {
 	
 	/**
 	 * Constructor
-	 * @param int status estatus del boton
-	 * @param int value valor del boton
-	 * @param int x i del arreglo
-	 * @param int y j del arreglo
+	 * @param status estatus del boton
+	 * @param value valor del boton
+	 * @param x i del arreglo
+	 * @param y j del arreglo
 	 */
 	public Boton(int status, int value, int x, int y){
 		//-- Por si mete un numero fuera de las constantes permitidas

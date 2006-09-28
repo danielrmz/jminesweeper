@@ -71,7 +71,6 @@ public class AboutFrame extends JDialog implements WindowListener, ActionListene
 	
 	/**
 	 * On Close
-	 * @param WindowEvent
 	 */
 	public void windowClosing(WindowEvent arg0) {
 		Main.buscaminas.setEnabled(true);

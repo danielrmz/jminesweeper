@@ -298,8 +298,8 @@ public class Grid extends JPanel implements MouseListener {
 	
 	/**
 	 * Metodo que cuenta si la cuadricula ya ha sido clickeada exceptuando las bombas
+	 * @return ok booleano
 	 */
-	
 	private boolean buttonequalBomb(){
 		int cleanbuttonclicked = 0;
 		for(int i=0;i<this.grid.length;i++){
@@ -312,7 +312,21 @@ public class Grid extends JPanel implements MouseListener {
 		}
 		return (((this.rows*this.cols) - cleanbuttonclicked) == this.nbombas)?true:false;
 	}
-				
+	
+	/**
+	 * Flagea los botones restantes
+	 */
+	private void flagleftbuttons()
+	{
+		for(int i=0;i<this.grid.length;i++){
+			for(int j=0;j<this.grid[i].length;j++){
+				Boton checker = this.grid[i][j];
+				if(checker.getStatus() == Boton.UNCLICKED)
+					checker.setStatus(Boton.FLAGED);
+			}
+		}
+	}
+	
 	/**
 	 * Establece las variables y cosas de entorno al ya ganar
 	 */
@@ -359,6 +373,10 @@ public class Grid extends JPanel implements MouseListener {
 		this.clicked = false;
 	}
 	
+	/**
+	 * Establece las bombas del grid 
+	 * @param bombs Bombas
+	 */
 	public void setBombs(int bombs){
 		this.nbombas = bombs;
 	}
@@ -417,15 +435,18 @@ public class Grid extends JPanel implements MouseListener {
 					this.descubreCeros(aux.x,aux.y);
 					if(this.buttonequalBomb()){
 						this.win();
+						this.flagleftbuttons();
 					}
 				} else if(aux.getValue() > Boton.NUMBER){  
 					if(this.buttonequalBomb()){
 						this.win();
+						this.flagleftbuttons();
 					}
 				}
 				this.clicked = true;
 			//-- Si es boton derecho poner bandera
 			} else if (arg0.getButton() == MouseEvent.BUTTON3 && (aux.getStatus() == Boton.UNCLICKED || aux.getStatus() == Boton.FLAGED )){ 
+				
 				int action = (aux.getStatus() == Boton.UNCLICKED)?Boton.FLAGED:Boton.UNCLICKED;
 				if(action == Boton.UNCLICKED) GameFrame.banderas++; else GameFrame.banderas--;
 				String extras = "";
@@ -476,7 +497,7 @@ public class Grid extends JPanel implements MouseListener {
 	
 	/**
 	 * Cuenta las flags puestas en las bombas
-	 * @return
+	 * @return bflaged el total de bombas flageadas
 	 */
 	public int countBombedFlags(){
 		int bflaged = 0;
@@ -493,6 +514,7 @@ public class Grid extends JPanel implements MouseListener {
 	
 	/**
 	 * Cuenta las flags puestas
+	 * @return int el total de casillas banderadas
 	 */
 	public int countFlags(){
 		int bflaged = 0;
@@ -509,6 +531,7 @@ public class Grid extends JPanel implements MouseListener {
 	
 	/**
 	 * Trae si alguna bomba ya fue abierta
+	 * @return ob Regresa si ya ha sido abierta una bomba
 	 */
 	public boolean hasOpenBomb(){
 		for(int i=0;i<this.grid.length;i++){
@@ -524,7 +547,7 @@ public class Grid extends JPanel implements MouseListener {
 	
 	/**
 	 * Trae el numero de renglones
-	 * @return
+	 * @return rows
 	 */
 	public int getRows(){ 
 		return this.rows; 
@@ -532,7 +555,7 @@ public class Grid extends JPanel implements MouseListener {
 	
 	/**
 	 * Trae el numero de columnas
-	 * @return
+	 * @return cols
 	 */
 	public int getCols(){ 
 		return this.cols; 
@@ -540,7 +563,7 @@ public class Grid extends JPanel implements MouseListener {
 	
 	/**
 	 * Trae el numero de minas
-	 * @return
+	 * @return nbombas
 	 */
 	public int getMines(){ 
 		return this.nbombas; 
@@ -548,7 +571,7 @@ public class Grid extends JPanel implements MouseListener {
 	
 	/**
 	 * Trae el tiempo total que duro la persona
-	 * @return
+	 * @return time
 	 */
 	public int getTime(){
 		return this.time;
@@ -556,7 +579,7 @@ public class Grid extends JPanel implements MouseListener {
 	
 	/**
 	 * Arreglo que contiene los datos principals de los botones
-	 * @return
+	 * @return data
 	 */
 	public int[][][] getData(){
 		int data[][][] = new int[this.rows][this.cols][2];
@@ -571,6 +594,7 @@ public class Grid extends JPanel implements MouseListener {
 	
 	/**
 	 * Establece los datos a partir de un arreglo
+	 * @param data datos[][][]
 	 */
 	public void setData(int[][][] data){
 		for(int i=0;i<this.rows;i++){
@@ -580,10 +604,6 @@ public class Grid extends JPanel implements MouseListener {
 			}
 		}
 	}
-	
-	/**
-	 * Trae las bombas abiertas
-	 */
 	
 	/*
 	 * Metodos sin usar del MouseListener
