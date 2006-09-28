@@ -342,6 +342,24 @@ public class Grid extends JPanel implements MouseListener {
 			System.out.println("Ganaste. Juego Terminado. Tiempo: "+this.time+" segundos.");
 		}
 		Main.buscaminas.face.setIcon(Main.getIconImage("cool.png"));	
+		
+		//Se checa si es highscore
+		Serial scores = new Serial("scores.ini");
+		
+		if(scores.getObject() != null){
+			BestsFrame b = (BestsFrame)scores.getObject();
+			int actual = Integer.parseInt(b.lista[GameFrame.nivel][1]);
+			if(this.time<actual){
+				BestsFrame n = new BestsFrame(true);
+				n.setVisible(true);
+				Main.buscaminas.setEnabled(false);
+			}
+		} else {
+			
+			BestsFrame n = new BestsFrame(true);
+			n.setVisible(true);
+			Main.buscaminas.setEnabled(false);
+		}
 	}
 	
 	/**
