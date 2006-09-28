@@ -1,9 +1,11 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.io.Serializable;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.filechooser.FileFilter;
 
 import com.sun.java.swing.plaf.windows.*;
 
@@ -180,6 +182,7 @@ public class GameFrame extends JFrame implements ActionListener {
 		//-- Listeners del menu
 		nuevo.addActionListener(this);
 		guardar.addActionListener(this);
+		abrir.addActionListener(this);
 		principiantes.addActionListener(this);
 		intermedios.addActionListener(this);
 		expertos.addActionListener(this);
@@ -256,15 +259,23 @@ public class GameFrame extends JFrame implements ActionListener {
 	}
 	
 	/**
-	 * Guarda el juego actual
+	 * Guarda el juego actual serializando el contenido para guardar los datos facilmente
+	 * y aparte que no sea modificable
 	 */
-	private void save(String route){
-		//TODO: Serializar Grid
+	private void save(File file){
+		String name = file.getName().replace(".jmsp","");
+		name+=".jmsp";
+		DataContainer data = new DataContainer(grid.getTime(),grid.getRows(),grid.getCols(),grid.getMines(),grid.getData());
+		new Serial(name,data);
 	}
 	
-	private void open(String route){
-		//TODO: Desearlizar Grid, e importar caracteristicas
+	private void open(File file){
+		DataContainer grid = (DataContainer)new Serial(file.getAbsolutePath()).getObject();
+		//TODO: Sacar e importar caracteristicas del DataContainer
+		
+		System.out.println(grid);
 	}
+	
 	/**
 	 * Action Performed al hacer click en algun item del menu
 	 * @param e Action Event
@@ -300,13 +311,21 @@ public class GameFrame extends JFrame implements ActionListener {
 			a = (pref.getObject()!=null)?(PreferencesFrame)pref.getObject():new PreferencesFrame();
 			a.setVisible(true);
 		} else if(e.getSource() == guardar){
-			JFileChooser fc = new JFileChooser();
+			JFileChooser fc = new JFileChooser(Main.RUTA);
+			fc.addChoosableFileFilter(new JMSPFilter());
 			fc.showSaveDialog(this);
-			File sf = fc.getSelectedFile();
-			String ruta = sf.toString();
-			this.save(ruta);
-			//new Serial("Grid.obj",this.grid);
-			//System.out.println("Juego Guardado");
+			File file = fc.getSelectedFile();
+			if(file!=null){
+				this.save(file);
+			}
+		} else if(e.getSource() == abrir){
+			JFileChooser fc = new JFileChooser(Main.RUTA);
+			fc.addChoosableFileFilter(new JMSPFilter());
+			fc.showOpenDialog(this);
+			File file = fc.getSelectedFile();
+			if(file!=null){
+				this.open(file);
+			}
 		}
 	}
 	
@@ -372,5 +391,33 @@ public class GameFrame extends JFrame implements ActionListener {
 	 */
 	public static void setActive(boolean active){
 		GameFrame.ACTIVE = active;
+	}
+	
+	private class JMSPFilter extends FileFilter {
+
+		public boolean accept(File arg0) {
+			String filename = arg0.getName();
+	        return (filename.endsWith(".jmsp")||arg0.isDirectory());
+		}
+
+		public String getDescription() {
+			return "*.jmsp";
+		}
+		
+	}
+	
+	private class DataContainer implements Serializable {
+		int[][][] data = null;
+		int time = 0;
+		int rows = 0;
+		int cols = 0;
+		int mines = 0;
+		public DataContainer(int time, int rows, int cols, int mines, int[][][] data){
+			this.time = time;
+			this.rows = rows;
+			this.cols = cols;
+			this.mines = mines;
+			this.data = data;
+		}
 	}
 }
