@@ -37,7 +37,7 @@ public class Grid extends JPanel implements MouseListener {
 	/**
 	 * Tiempo usado para poner todas las bombas
 	 */
-	private int time = 0;
+	public int time = 0;
 	
 	/**
 	 * Safe Click
