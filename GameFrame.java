@@ -263,13 +263,19 @@ public class GameFrame extends JFrame implements ActionListener {
 	 * y aparte que no sea modificable
 	 */
 	private void save(File file){
+		if(file==null) return;
 		String name = file.getName().replace(".jmsp","");
 		name+=".jmsp";
 		DataContainer data = new DataContainer(grid.getTime(),grid.getRows(),grid.getCols(),grid.getMines(),grid.getData());
 		new Serial(name,data);
 	}
 	
+	/**
+	 * Abre un juego guardado
+	 * @param file
+	 */
 	private void open(File file){
+		if(file==null) return;
 		DataContainer grid = (DataContainer)new Serial(file.getAbsolutePath()).getObject();
 		if(grid==null) return;
 		this.grid.reset(); //Se cancela el juego actual [el timer y eso]
@@ -414,6 +420,11 @@ public class GameFrame extends JFrame implements ActionListener {
 		GameFrame.ACTIVE = active;
 	}
 	
+	/**
+	 * Clase filtro para los cuadros de dialogo abrir y guardar
+	 * @author Revolution Software Developers
+	 *
+	 */
 	private class JMSPFilter extends FileFilter {
 
 		public boolean accept(File arg0) {
@@ -422,11 +433,16 @@ public class GameFrame extends JFrame implements ActionListener {
 		}
 
 		public String getDescription() {
-			return "*.jmsp";
+			return "JMinsweeper Game File (*.jmsp)";
 		}
 		
 	}
 	
+	/**
+	 * Modelo de datos que actua como contenedor para un objeto serializado y tener una
+	 * estructura hecha para guardar/abrir un juego
+	 * @author Revolution Software Developers
+	 */
 	public static class DataContainer implements Serializable {
 		private static final long serialVersionUID = 1L;
 		int[][][] data = null;
