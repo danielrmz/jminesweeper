@@ -121,6 +121,11 @@ public class GameFrame extends JFrame implements ActionListener {
 	public static JLabel cbanderas = new JLabel("000");
 	
 	/**
+	 * Nivel actual
+	 */
+	public static int nivel = 1;
+	
+	/**
 	 * Constructor, Inicializa el frame de la aplicación
 	 */
 	public GameFrame() {
@@ -171,6 +176,8 @@ public class GameFrame extends JFrame implements ActionListener {
 		archivo.add(expertos);
 		archivo.add(preferencias);
 		archivo.addSeparator();
+		archivo.add(mejores);
+		archivo.addSeparator();
 		archivo.add(sonido);
 		archivo.addSeparator();
 		archivo.add(salir);
@@ -189,7 +196,7 @@ public class GameFrame extends JFrame implements ActionListener {
 		preferencias.addActionListener(this);
 		sonido.addActionListener(this);
 		salir.addActionListener(this);
-		
+		mejores.addActionListener(this);
 		contenido.addActionListener(this);
 		sobre.addActionListener(this);
 		
@@ -353,6 +360,10 @@ public class GameFrame extends JFrame implements ActionListener {
 			if(file!=null){
 				this.open(file);
 			}
+		} else if(e.getSource() == mejores){
+			Main.buscaminas.setEnabled(false);
+			BestsFrame b = new BestsFrame(false);
+			b.setVisible(true);
 		}
 	}
 	
@@ -365,6 +376,7 @@ public class GameFrame extends JFrame implements ActionListener {
 			this.grid.tiempo.stop();
 			GameFrame.ctiempo.setText("000");
 		}
+		GameFrame.nivel = nivel;
 		switch(nivel){
 		case 1: //-- Principiante 
 			this.grid = new Grid(9,9); //cols,rows
