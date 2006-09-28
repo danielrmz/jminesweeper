@@ -120,7 +120,7 @@ public class Grid extends JPanel implements MouseListener {
 		int min = (int)(this.rows * this.cols * 0.15); //-- Total de bombas a generar
 		int max = (int)(this.rows * this.cols * 0.8); //-- Maximo de bombas posibles
 		int total = min;
-		
+		total = 1;
 		//-- Si no excede el numero de bombas permitidas
 		if(this.nbombas <= max && this.nbombas > -1){
 			total = this.nbombas;
@@ -145,7 +145,8 @@ public class Grid extends JPanel implements MouseListener {
 					
 			}
 		}
-		
+		if(Main.debug)
+			System.out.println("Minas restantes por alocar: "+total);
 		return data;
 	}
 	
@@ -295,8 +296,23 @@ public class Grid extends JPanel implements MouseListener {
 		}
 	}
 	
-
+	/**
+	 * Metodo que cuenta si la cuadricula ya ha sido clickeada exceptuando las bombas
+	 */
 	
+	private boolean buttonequalBomb(){
+		int cleanbuttonclicked = 0;
+		for(int i=0;i<this.grid.length;i++){
+			for(int j=0;j<this.grid[i].length;j++){
+				Boton auxclickeds = this.grid[i][j];
+				if(auxclickeds.getStatus() == Boton.CLICKED && auxclickeds.getValue() >= Boton.NUMBER){
+					cleanbuttonclicked++;
+				}
+			}	
+		}
+		return (((this.rows*this.cols) - cleanbuttonclicked) == this.nbombas)?true:false;
+	}
+				
 	/**
 	 * Establece las variables y cosas de entorno al ya ganar
 	 */
@@ -399,9 +415,13 @@ public class Grid extends JPanel implements MouseListener {
 				} else if(aux.getValue() == Boton.NUMBER){ 
 					//-- Descubre 0s si es casilla vacia
 					this.descubreCeros(aux.x,aux.y);
-					
+					if(this.buttonequalBomb()){
+						this.win();
+					}
 				} else if(aux.getValue() > Boton.NUMBER){  
-					
+					if(this.buttonequalBomb()){
+						this.win();
+					}
 				}
 				this.clicked = true;
 			//-- Si es boton derecho poner bandera
@@ -501,6 +521,21 @@ public class Grid extends JPanel implements MouseListener {
 	 */
 	public int getTime(){
 		return this.time;
+	}
+	
+	/**
+	 * Arreglo que contiene los datos principals de los botones
+	 * @return
+	 */
+	public int[][][] getData(){
+		int data[][][] = new int[this.rows][this.cols][2];
+		for(int i=0;i<this.rows;i++){
+			for(int j=0; j<this.cols; j++){
+				data[i][j][0] = this.grid[i][j].getStatus(); //-- Status
+				data[i][j][1] = this.grid[i][j].getValue();	 //-- Value
+			}
+		}
+		return data;
 	}
 	
 	/*

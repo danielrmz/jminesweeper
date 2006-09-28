@@ -56,8 +56,9 @@ public class Serial {
 					out = new ObjectOutputStream(fos);
 					out.writeObject(base);
 					out.close();
-				} catch (IOException ex){
-					ex.printStackTrace();
+				} catch (Exception ex){
+					if(Serial.debug || Main.debug)
+						ex.printStackTrace();
 				}
 				if(Serial.debug || Main.debug)
 					System.out.println("Serializacion Completa");
