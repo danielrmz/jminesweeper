@@ -289,7 +289,7 @@ public class GameFrame extends JFrame implements ActionListener {
 		//-- Se crea el nuevo grid de acuerdo a la configuracion guardada
 		this.grid = new Grid(grid.cols,grid.rows,grid.mines);
 		this.grid.setData(grid.data);
-		
+		this.grid.time = grid.time;
 		if(this.grid.allBombsFlaged()){
 			GameFrame.setActive(false);
 			this.face.setIcon(Main.getIconImage("cool.png"));	
