@@ -90,9 +90,11 @@ public class Boton extends JButton {
 		//-- Parametros del arreglo contenedor de botones
 		this.x = x;
 		this.y = y;
-	
+		
 		//-- Configuraciones del boton
-		this.setIcon(Main.getIconImage("boton"+Boton.tematica+".png"));
+		ImageIcon img = Main.getIconImage("boton"+Boton.tematica+".png");
+		img = (img==null)?Main.getIconImage("boton.png"):img;
+		this.setIcon(img);
 		this.setBorder(null);
 		this.setBorderPainted(false);
 		this.setCursor("cursor"+Boton.tematica+".gif");
@@ -117,17 +119,29 @@ public class Boton extends JButton {
 		case Boton.BOMB: 
 			if(this.status != Boton.FLAGED){
 				image = Main.getIconImage("bomb"+tematica+".png");
+				if(image==null){
+					image = Main.getIconImage("bomb.png");
+				}
 			} 
 			break;
 		case Boton.DEAD: 
 			image = Main.getIconImage("selectedbomb"+Boton.tematica+".png");
+			if(image==null){
+				image = Main.getIconImage("selectedbomb.png");
+			}
 			break;
 		
 		case Boton.NUMBER:
 			image = Main.getIconImage("blank.png");
+			if(image==null){
+				image = Main.getIconImage("blank.png");
+			}
 			break;
 		default: 
 			image = Main.getIconImage("boton"+Boton.tematica+".png");
+			if(image==null){
+				image = Main.getIconImage("boton.png");
+			}
 			break;
 		}
 		this.setIcon(image);
@@ -174,11 +188,17 @@ public class Boton extends JButton {
 		} else if(status == Boton.CLICKED && this.value >=1 && aux == Boton.FLAGED ){
 		
 			ImageIcon img = Main.getIconImage("flagedbomb"+Boton.tematica+".png");
+			if(img==null){
+				img=  img = Main.getIconImage("flagedbomb.png");
+			}
 			this.setIcon(img);
 		
 		} else if(status == Boton.FLAGED){
 			
 			ImageIcon img = Main.getIconImage("flag"+Boton.tematica+".png");
+			if(img==null){
+				img=  img = Main.getIconImage("flag.png");
+			}
 			this.setIcon(img);
 			
 		} else if(status==Boton.UNCLICKED) {
@@ -187,6 +207,9 @@ public class Boton extends JButton {
 			
 		} else if(this.value>0) {
 			ImageIcon img = Main.getIconImage(this.value+tematica+".png");
+			if(img==null){
+				img=  img = Main.getIconImage(this.value+".png");
+			}
 			this.setIcon(img);
 		} 
 	}

@@ -70,6 +70,7 @@ public class Main {
 	 */
 	public static ImageIcon getIconImage(String filename){	
 		ImageIcon image = new ImageIcon(Main.RUTA+"img/"+filename);
+		if(image.getImageLoadStatus()==4) return null;
 		return image;
 	}
 	
