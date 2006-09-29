@@ -44,6 +44,11 @@ public class Boton extends JButton {
 	 */
 	public static final int CLICKED = 1;
 	
+	
+	/**
+	 * Variable que se agrega a los archivos de imagen al cargar para que sea consistentes
+	 * con la tematica elegida
+	 */
 	public static String tematica = "";
 	
 	/**

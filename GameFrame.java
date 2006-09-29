@@ -276,7 +276,7 @@ public class GameFrame extends JFrame implements ActionListener {
 	private void gameRestart(boolean gridreset){
 		if (original.getState()){
 			Boton.tematica = "";
-		}else{
+		}else if(cementerio.getState()){
 			Boton.tematica = "d";
 		}
 		face.setIcon(Main.getIconImage("face_happy"+Boton.tematica+".jpg"));
