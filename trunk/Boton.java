@@ -115,14 +115,14 @@ public class Boton extends JButton {
 			} 
 			break;
 		case Boton.DEAD: 
-			image = Main.getIconImage("selectedbomb.png");
+			image = Main.getIconImage("selectedbomb"+Boton.tematica+".png");
 			break;
 		
 		case Boton.NUMBER:
 			image = Main.getIconImage("blank.png");
 			break;
 		default: 
-			image = Main.getIconImage("boton.png");
+			image = Main.getIconImage("boton"+Boton.tematica+".png");
 			break;
 		}
 		this.setIcon(image);
@@ -168,12 +168,12 @@ public class Boton extends JButton {
 			
 		} else if(status == Boton.CLICKED && this.value >=1 && aux == Boton.FLAGED ){
 		
-			ImageIcon img = Main.getIconImage("flagedbomb.png");
+			ImageIcon img = Main.getIconImage("flagedbomb"+Boton.tematica+".png");
 			this.setIcon(img);
 		
 		} else if(status == Boton.FLAGED){
 			
-			ImageIcon img = Main.getIconImage("flag.png");
+			ImageIcon img = Main.getIconImage("flag"+Boton.tematica+".png");
 			this.setIcon(img);
 			
 		} else if(status==Boton.UNCLICKED) {
