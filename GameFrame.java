@@ -80,10 +80,20 @@ public class GameFrame extends JFrame implements ActionListener {
 	 */
 	private JMenuItem abrir = new JMenuItem("Abrir");
 	
+	/**
+	 * Tema Original
+	 */
 	private JCheckBoxMenuItem original = new JCheckBoxMenuItem("Original");
 	
+	/**
+	 * Tema de cementerio
+	 */
 	private JCheckBoxMenuItem cementerio = new JCheckBoxMenuItem("Cementerio");
 	
+	/**
+	 * Tema glass
+	 */
+	private JCheckBoxMenuItem glass = new JCheckBoxMenuItem("Glass");
 	
 	/**
 	 * Menu Item Sonido
@@ -177,10 +187,11 @@ public class GameFrame extends JFrame implements ActionListener {
 		
 		tematica.add(original);
 		tematica.add(cementerio);
+		tematica.add(glass);
 		
 		original.addActionListener(this);
 		cementerio.addActionListener(this);
-		
+		glass.addActionListener(this);
 		original.setState(true);
 		
 		archivo.add(guardar);
@@ -389,16 +400,23 @@ public class GameFrame extends JFrame implements ActionListener {
 		} else if(e.getSource() == original){
 			Boton.tematica = "";
 			cementerio.setState(false);
+			glass.setState(false);
 			this.gameRestart(true);
-			this.setTitle("BuscaMinas");
+			this.setTitle("Buscaminas");
 			
 		} else if(e.getSource() == cementerio){
 			Boton.tematica = "d";
 			original.setState(false);
+			glass.setState(false);
 			this.gameRestart(true);
 			this.setTitle("BuscaTumbas");
-			
-		} 
+		} else if(e.getSource() == glass){
+			Boton.tematica = "g";
+			original.setState(false);
+			cementerio.setState(false);
+			this.gameRestart(true);
+			this.setTitle("Buscaminas");
+		}
 	}
 	
 	/**
