@@ -341,7 +341,7 @@ public class Grid extends JPanel implements MouseListener {
 		if(Main.debug){
 			System.out.println("Ganaste. Juego Terminado. Tiempo: "+this.time+" segundos.");
 		}
-		Main.buscaminas.face.setIcon(Main.getIconImage("cool.png"));	
+		Main.buscaminas.face.setIcon(Main.getIconImage("cool"+Boton.tematica+".png"));	
 		
 		//Se checa si es highscore
 		Serial scores = new Serial("scores.ini");
@@ -446,7 +446,7 @@ public class Grid extends JPanel implements MouseListener {
 						//-- Descubre las demas bombas
 						this.uncoverBombs();
 						//-- Cambia la carilla
-						Main.buscaminas.face.setIcon(Main.getIconImage("face_lose.jpg"));
+						Main.buscaminas.face.setIcon(Main.getIconImage("face_lose"+Boton.tematica+".jpg"));
 					}
 				} else if(aux.getValue() == Boton.NUMBER){ 
 					//-- Descubre 0s si es casilla vacia
@@ -480,7 +480,7 @@ public class Grid extends JPanel implements MouseListener {
 				
 			} else if(aux.getStatus() == Boton.FLAGED){ 
 				//-- Si tiene bandera y le pico poner carilla sorprendida
-				Main.buscaminas.face.setIcon(Main.getIconImage("face_surprised.jpg"));
+				Main.buscaminas.face.setIcon(Main.getIconImage("face_surprised"+Boton.tematica+".jpg"));
 			}
 		}
 	}
