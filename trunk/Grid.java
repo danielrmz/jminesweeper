@@ -492,7 +492,7 @@ public class Grid extends JPanel implements MouseListener {
 		Boton aux = (Boton)arg0.getSource();
 		//-- Si el juego esta activo y no le pico a la bomba
 		if(aux.getValue() != Boton.DEAD && GameFrame.getActive()){
-			Main.buscaminas.face.setIcon(Main.getIconImage("face_happy.jpg"));
+			Main.buscaminas.face.setIcon(Main.getIconImage("face_happy"+Boton.tematica+".jpg"));
 		}
 	}
 	

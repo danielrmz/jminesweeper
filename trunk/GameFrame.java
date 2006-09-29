@@ -80,6 +80,11 @@ public class GameFrame extends JFrame implements ActionListener {
 	 */
 	private JMenuItem abrir = new JMenuItem("Abrir");
 	
+	private JCheckBoxMenuItem original = new JCheckBoxMenuItem("Original");
+	
+	private JCheckBoxMenuItem cementerio = new JCheckBoxMenuItem("Cementerio");
+	
+	
 	/**
 	 * Menu Item Sonido
 	 */
@@ -149,10 +154,12 @@ public class GameFrame extends JFrame implements ActionListener {
 		//-- Menus
 		JMenu archivo = new JMenu("Archivo");
 		JMenu ayuda = new JMenu("Ayuda");
+		JMenu tematica = new JMenu("Tematica");
 		
 		//-- Mnemonicos para el acceso rapido a los menus
 		archivo.setMnemonic('A');
 		ayuda.setMnemonic('y');
+		tematica.setMnemonic('T');
 		nuevo.setMnemonic('N');
 		contenido.setMnemonic('C');
 		sobre.setMnemonic('S');
@@ -168,6 +175,14 @@ public class GameFrame extends JFrame implements ActionListener {
 		nuevo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0));
 		contenido.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
 		
+		tematica.add(original);
+		tematica.add(cementerio);
+		
+		original.addActionListener(this);
+		cementerio.addActionListener(this);
+		
+		original.setState(true);
+		
 		archivo.add(guardar);
 		archivo.add(abrir);
 		archivo.addSeparator();
@@ -175,6 +190,8 @@ public class GameFrame extends JFrame implements ActionListener {
 		archivo.add(intermedios);
 		archivo.add(expertos);
 		archivo.add(preferencias);
+		archivo.addSeparator();
+		archivo.add(tematica);
 		archivo.addSeparator();
 		archivo.add(mejores);
 		archivo.addSeparator();
@@ -208,7 +225,7 @@ public class GameFrame extends JFrame implements ActionListener {
 		this.setJMenuBar(menubar);
 		
 		//-- Estadisticas
-		face.setIcon(Main.getIconImage("face_happy.jpg"));
+		face.setIcon(Main.getIconImage("face_happy"+Boton.tematica+".jpg"));
 		face.setBorder(BorderFactory.createEmptyBorder());
 		face.setBorderPainted(false);
 		face.addActionListener(this);
@@ -257,7 +274,13 @@ public class GameFrame extends JFrame implements ActionListener {
 	 * Se encarga de poner el juego activo, asi como reiniciar los contadores
 	 */
 	private void gameRestart(boolean gridreset){
-		face.setIcon(Main.getIconImage("face_happy.jpg"));
+		if (original.isEnabled()){
+			Boton.tematica = "";
+		}
+		if(cementerio.isEnabled()){
+			Boton.tematica = "d";
+		}
+		face.setIcon(Main.getIconImage("face_happy"+Boton.tematica+".jpg"));
 		GameFrame.setActive(true);
 		GameFrame.banderas = this.grid.getMines();
 		if(gridreset){
@@ -364,7 +387,12 @@ public class GameFrame extends JFrame implements ActionListener {
 			Main.buscaminas.setEnabled(false);
 			BestsFrame b = new BestsFrame(false);
 			b.setVisible(true);
-		}
+		} else if(e.getSource() == original){
+			cementerio.setState(false);
+			
+		} else if(e.getSource() == cementerio){
+			original.setState(false);
+		} 
 	}
 	
 	/**
