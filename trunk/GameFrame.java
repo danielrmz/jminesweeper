@@ -274,10 +274,9 @@ public class GameFrame extends JFrame implements ActionListener {
 	 * Se encarga de poner el juego activo, asi como reiniciar los contadores
 	 */
 	private void gameRestart(boolean gridreset){
-		if (original.isEnabled()){
+		if (original.getState()){
 			Boton.tematica = "";
-		}
-		if(cementerio.isEnabled()){
+		}else{
 			Boton.tematica = "d";
 		}
 		face.setIcon(Main.getIconImage("face_happy"+Boton.tematica+".jpg"));
@@ -388,10 +387,17 @@ public class GameFrame extends JFrame implements ActionListener {
 			BestsFrame b = new BestsFrame(false);
 			b.setVisible(true);
 		} else if(e.getSource() == original){
+			Boton.tematica = "";
 			cementerio.setState(false);
+			this.gameRestart(true);
+			this.setTitle("BuscaMinas");
 			
 		} else if(e.getSource() == cementerio){
+			Boton.tematica = "d";
 			original.setState(false);
+			this.gameRestart(true);
+			this.setTitle("BuscaTumbas");
+			
 		} 
 	}
 	

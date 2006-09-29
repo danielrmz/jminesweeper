@@ -87,7 +87,7 @@ public class Boton extends JButton {
 		this.y = y;
 	
 		//-- Configuraciones del boton
-		this.setIcon(Main.getIconImage("boton.png"));
+		this.setIcon(Main.getIconImage("boton"+this.tematica+".png"));
 		this.setBorder(null);
 		this.setBorderPainted(false);
 		this.setCursor("rifle.gif");
@@ -178,7 +178,7 @@ public class Boton extends JButton {
 			
 		} else if(status==Boton.UNCLICKED) {
 			
-			this.setIcon(Main.getIconImage("boton.png"));
+			this.setIcon(Main.getIconImage("boton"+Boton.tematica+".png"));
 			
 		} else if(this.value>0) {
 			ImageIcon img = Main.getIconImage(this.value+tematica+".png");
