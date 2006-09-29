@@ -87,10 +87,10 @@ public class Boton extends JButton {
 		this.y = y;
 	
 		//-- Configuraciones del boton
-		this.setIcon(Main.getIconImage("boton"+this.tematica+".png"));
+		this.setIcon(Main.getIconImage("boton"+Boton.tematica+".png"));
 		this.setBorder(null);
 		this.setBorderPainted(false);
-		this.setCursor("rifle.gif");
+		this.setCursor("cursor"+Boton.tematica+".gif");
 		this.setFocusable(false);
 	}
 	
