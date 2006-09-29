@@ -44,6 +44,8 @@ public class Boton extends JButton {
 	 */
 	public static final int CLICKED = 1;
 	
+	public static String tematica = "";
+	
 	/**
 	 * Variable local del estatus actual
 	 * Clicked, Unclicked o Flagged
@@ -109,7 +111,7 @@ public class Boton extends JButton {
 		switch(this.value){
 		case Boton.BOMB: 
 			if(this.status != Boton.FLAGED){
-				image = Main.getIconImage("bomb.png");
+				image = Main.getIconImage("bomb"+tematica+".png");
 			} 
 			break;
 		case Boton.DEAD: 
@@ -179,7 +181,7 @@ public class Boton extends JButton {
 			this.setIcon(Main.getIconImage("boton.png"));
 			
 		} else if(this.value>0) {
-			ImageIcon img = Main.getIconImage(this.value+".png");
+			ImageIcon img = Main.getIconImage(this.value+tematica+".png");
 			this.setIcon(img);
 		} 
 	}
